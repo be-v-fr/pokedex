@@ -9,6 +9,10 @@ body {
     font-family: 'Open Sans';
 }
 
+body.no-scroll {
+    overflow: hidden; /* Verhindert das Scrollen auf der ursprünglichen Website */
+}
+
 h1 {
     margin: 0;
     font-size: 24px;

@@ -81,6 +81,7 @@ function view() {
 }
 
 function toggleViewer(event) {
+    const body = document.body;
     const overlay = document.getElementById('overlay');
     overlay.style.display = (overlay.style.display === 'none') ? 'flex' : 'none';
 
@@ -88,6 +89,8 @@ function toggleViewer(event) {
     if (event && !event.target.closest('#viewer')) {
         overlay.style.display = 'none';
     }
+
+    body.classList.toggle('no-scroll');
 }
 
 function type1Html(type) {
