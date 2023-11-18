@@ -53,10 +53,24 @@ h1 {
     object-fit: cover;
 }
 
+.overlay {
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
 #pokemonViewer {
-    display: none;
     min-height: 50vh;
-    /* background-color: red; */
     color: white;
     display: flex;
+    width: 300px;
+    height: 400px;
+    background: yellow;
+    padding: 20px;
+    box-sizing: border-box;
 }

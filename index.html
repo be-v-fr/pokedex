@@ -12,26 +12,15 @@
 </head>
 
 <body onload="init()">
-    <div id="pokedex">
-        <div class="pokedexCard">
-            <div class="pokedexCardLeft">
-                <h1>Name</h1>
-                <p class="pokedexType">Typ 0</p>
-                <p class="pokedexType">Typ 1</p>
-            </div>
-            <div class="pokedexCardRight">
-                <svg class="pokedexBgEllipse"></svg>
-                <img class="pokedexImg" src="1.png">
-            </div>
+    <div id="pokedex"></div>
+
+    <div class="overlay" id="overlay" onclick="toggleViewer(false)" style="display: none">
+        <div id="pokemonViewer" onclick="">
+            <p>Das ist der Inhalt des Pop-Ups.</p>
+            <button onclick="toggleViewer(false)">Schließen</button>
         </div>
-
     </div>
 
-    </div>
-
-    <div id="pokemonViewer">
-
-    </div>
 </body>
 
 </html>

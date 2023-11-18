@@ -3,7 +3,6 @@ let pokemon = [];
 async function init() {
     await loadPokemon();
     renderPokedex();
-    // renderPokemonToViewer(0);
 }
 
 async function loadPokemon() {
@@ -31,7 +30,7 @@ function renderPokedex() {
         const data = pokedexData(i);
         const type1 = data[3];
         pokedex.innerHTML += cardHtml(data);
-        if(type1) {
+        if (type1) {
             const id = `pokedexCardLeft${data[0]}`;
             const card = document.getElementById(id);
             card.innerHTML += type1Html(type1);
@@ -57,14 +56,14 @@ function pokedexData(pokemonIndex) {
     if (pokemonJson['types']['1']) {
         type1 = pokemonJson['types']['1']['type']['name'];
         type1 = capitalizeFirstLetter(type1);
-    }   
+    }
 
     return [name, imgUrl, type0, type1];
 }
 
 function cardHtml(pokedexData) { // 0: name, 1: imgUrl, 2: type0, 3: type1
     return /* html */ `
-        <div class="pokedexCard">
+        <div class="pokedexCard" onclick="view()">
         <div class="pokedexCardLeft" id="pokedexCardLeft${pokedexData[0]}">
             <h1>${pokedexData[0]}</h1>
             <p class="pokedexType">${pokedexData[2]}</p>
@@ -75,6 +74,19 @@ function cardHtml(pokedexData) { // 0: name, 1: imgUrl, 2: type0, 3: type1
         </div>
     </div>
 `;
+}
+
+function view() {
+    toggleViewer(true);
+}
+
+function toggleViewer(show) {
+    const overlay = document.getElementById('overlay');
+    if (show) {
+        overlay.style.display = 'flex';
+    } else {
+        overlay.style.display = 'none';
+    }
 }
 
 function type1Html(type) {
