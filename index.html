@@ -14,13 +14,13 @@
 <body onload="init()">
     <div id="pokedex"></div>
 
-    <div class="overlay" id="overlay" onclick="toggleViewer(false)" style="display: none">
-        <button>zurück</button>
-        <div id="pokemonViewer" onclick="">
+    <div class="overlay" id="overlay" onclick="toggleViewer(event)" style="display: none">
+        <button onclick="event.stopPropagation()">zurück</button>
+        <div id="pokemonViewer" onclick="event.stopPropagation()">
             <p>Das ist der Inhalt des Pop-Ups.</p>
-            <button onclick="toggleViewer(false)">Schließen</button>
+            <button onclick="toggleViewer(event)">Schließen</button>
         </div>
-        <button>weiter</button>
+        <button onclick="event.stopPropagation()">weiter</button>
     </div>
 
 </body>

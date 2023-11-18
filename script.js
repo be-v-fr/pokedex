@@ -28,7 +28,7 @@ function renderPokedex() {
     pokedex.innerHTML = '';
     for (let i = 0; i < pokemon.length; i++) {
         const data = pokedexData(i);
-        const type1 = data[3];
+        const type1 = data[4];
         pokedex.innerHTML += cardHtml(data);
         if (type1) {
             const id = `pokedexCardLeft${data[0]}`;
@@ -40,8 +40,7 @@ function renderPokedex() {
 
 function renderPokemonToViewer(pokemonIndex) {
     const pokemonViewer = document.getElementById('pokemonViewer');
-    let pokemonJson = pokemon[pokemonIndex];
-    pokemonViewer.innerHTML += viewerHtml(pokemonJson);
+
 }
 
 function pokedexData(pokemonIndex) {
@@ -58,33 +57,35 @@ function pokedexData(pokemonIndex) {
         type1 = capitalizeFirstLetter(type1);
     }
 
-    return [name, imgUrl, type0, type1];
+    return [pokemonIndex, name, imgUrl, type0, type1];
 }
 
-function cardHtml(pokedexData) { // 0: name, 1: imgUrl, 2: type0, 3: type1
+function cardHtml(pokedexData) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
     return /* html */ `
         <div class="pokedexCard" onclick="view()">
         <div class="pokedexCardLeft" id="pokedexCardLeft${pokedexData[0]}">
-            <h1>${pokedexData[0]}</h1>
-            <p class="pokedexType">${pokedexData[2]}</p>
+            <h1>${pokedexData[1]}</h1>
+            <p class="pokedexType">${pokedexData[3]}</p>
         </div>
         <div class="pokedexCardRight">
             <svg class="pokedexBgEllipse"></svg>
-            <img class="pokedexImg" src="${pokedexData[1]}">
+            <img class="pokedexImg" src="${pokedexData[2]}">
         </div>
     </div>
 `;
 }
 
 function view() {
-    toggleViewer(true);
+    toggleViewer();
+    renderPokemonToViewer();
 }
 
-function toggleViewer(show) {
+function toggleViewer(event) {
     const overlay = document.getElementById('overlay');
-    if (show) {
-        overlay.style.display = 'flex';
-    } else {
+    overlay.style.display = (overlay.style.display === 'none') ? 'flex' : 'none';
+
+    // Wenn ein Event übergeben wurde und es nicht im Pop-Up war, schließe das Pop-Up
+    if (event && !event.target.closest('#viewer')) {
         overlay.style.display = 'none';
     }
 }
@@ -96,12 +97,5 @@ function type1Html(type) {
 }
 
 function viewerHtml(pokemonJson) {
-    let imgUrl = pokemonJson['sprites']['other']['official-artwork'];
-    let name = pokemonJson['name'];
-    name = capitalizeFirstLetter(name);
 
-    return /* html */ `
-        <img src="${spriteUrl}" alt="Bild">
-        <h1>${name}</h1>    
-    `;
 }
