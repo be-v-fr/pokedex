@@ -1,4 +1,5 @@
 let pokemon = [];
+let currentPokemon = 0;
 
 async function init() {
     await loadPokemon();
@@ -71,6 +72,7 @@ function cardHtml(pokedexData) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: t
 }
 
 function view(pokemonIndex) {
+    currentPokemon = pokemonIndex;
     toggleViewer();
     renderPokemonToViewer(pokemonIndex);
 }
@@ -97,10 +99,35 @@ function renderPokemonToViewer(pokemonIndex) {
     name.innerHTML = basicData[1];
     types.innerHTML = '';
     types.innerHTML += typeHtml(basicData[3]);
-    if(basicData[4]) {
+    if (basicData[4]) {
         types.innerHTML += typeHtml(basicData[4]);
     }
     pokemonImg.src = basicData[2];
+}
+
+function nextPokemon(next) {
+    if (next) {
+        incrementCurrent();
+    } else {
+        decrementCurrent();
+    }
+    renderPokemonToViewer(currentPokemon);
+}
+
+function incrementCurrent() {
+    if (currentPokemon < pokemon.length - 1) {
+        currentPokemon++;
+    } else {
+        currentPokemon = 0;
+    }
+}
+
+function decrementCurrent() {
+    if (currentPokemon > 0) {
+        currentPokemon--;
+        } else {
+            currentPokemon = pokemon.length - 1;
+        }
 }
 
 function typeHtml(type) {
