@@ -33,14 +33,9 @@ function renderPokedex() {
         if (type1) {
             const id = `pokedexCardLeft${data[0]}`;
             const card = document.getElementById(id);
-            card.innerHTML += type1Html(type1);
+            card.innerHTML += typeHtml(type1);
         }
     }
-}
-
-function renderPokemonToViewer(pokemonIndex) {
-    const pokemonViewer = document.getElementById('pokemonViewer');
-
 }
 
 function pokedexData(pokemonIndex) {
@@ -62,10 +57,10 @@ function pokedexData(pokemonIndex) {
 
 function cardHtml(pokedexData) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
     return /* html */ `
-        <div class="pokedexCard" onclick="view()">
+        <div class="pokedexCard" onclick="view(${pokedexData[0]})">
         <div class="pokedexCardLeft" id="pokedexCardLeft${pokedexData[0]}">
             <h1>${pokedexData[1]}</h1>
-            <p class="pokedexType">${pokedexData[3]}</p>
+            <span class="pokedexType">${pokedexData[3]}</span>
         </div>
         <div class="pokedexCardRight">
             <svg class="pokedexBgEllipse"></svg>
@@ -75,9 +70,9 @@ function cardHtml(pokedexData) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: t
 `;
 }
 
-function view() {
+function view(pokemonIndex) {
     toggleViewer();
-    renderPokemonToViewer();
+    renderPokemonToViewer(pokemonIndex);
 }
 
 function toggleViewer(event) {
@@ -93,9 +88,24 @@ function toggleViewer(event) {
     body.classList.toggle('no-scroll');
 }
 
-function type1Html(type) {
+function renderPokemonToViewer(pokemonIndex) {
+    const basicData = pokedexData(pokemonIndex); // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
+    const name = document.getElementById('viewerName');
+    const types = document.getElementById('viewerTypes');
+    const pokemonImg = document.getElementById('viewerPokemonImg');
+
+    name.innerHTML = basicData[1];
+    types.innerHTML = '';
+    types.innerHTML += typeHtml(basicData[3]);
+    if(basicData[4]) {
+        types.innerHTML += typeHtml(basicData[4]);
+    }
+    pokemonImg.src = basicData[2];
+}
+
+function typeHtml(type) {
     return /* html */ `
-        <p class="pokedexType">${type}</p>
+        <span class="pokedexType">${type}</span>
     `;
 }
 
