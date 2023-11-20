@@ -1,7 +1,22 @@
 const TYPE_COLORS = {
-    types: ['bug', 'dark', 'dragon', 'electric', 'fairy', 'fighting', 'fire', 'flying', 'ghost', 'grass', 'ground', 'ice', 'normal', 'poison', 'psychic', 'rock', 'steel', 'water'],
-    colors: ['#3A9A54', '#5C5879', '#448994', '#FCF872', '#E71469', '#ED6237', '#FF4A5A', '#93B2C7', '#8E6890', '#26CB4C', '#A96F2F', '#D8F0FA', '#CB97A7', '#9D68D9', '#F41E90', '#893E23', '#42BD94', '#85A9FE'],
-    colors_dark: ['#1C4B27', '#040706', '#458A95', '#E3E32B', '#981844', '#984025', '#AB1F23', '#4C667C', '#33336B', '#147B3C', '#A7702C', '#86D2F5', '#75515B', '#5E2D88', '#A42A6C', '#4A180C', '#5F756D', '#1552E4']
+    bug: '#3A9A54',
+    dark: '#5C5879',
+    dragon: '#448994',
+    electric: '#FCF872',
+    fairy: '#E71469',
+    fighting: '#ED6237',
+    fire: '#FF4A5A',
+    flying: '#93B2C7',
+    ghost: '#8E6890',
+    grass: '#26CB4C',
+    ground: '#A96F2F',
+    ice: '#D8F0FA',
+    normal: '#CB97A7',
+    poison: '#9D68D9',
+    psychic: '#F41E90',
+    rock: '#893E23',
+    steel: '#42BD94',
+    water: '#85A9FE'
 };
 
 let pokemon = [];
@@ -70,8 +85,7 @@ function setPokedexBgColor(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4:
 
 function getTypeColor(type) {
     type = type.toLowerCase(); // klein schreiben, da Parameter in Großschreibweise übergeben wurde
-    let index = TYPE_COLORS['types'].indexOf(type);
-    return TYPE_COLORS['colors'][index];
+    return TYPE_COLORS[`${type}`];
 }
 
 function view(pokemonIndex) {
@@ -134,9 +148,9 @@ function incrementCurrent() {
 function decrementCurrent() {
     if (currentPokemon > 0) {
         currentPokemon--;
-        } else {
-            currentPokemon = pokemon.length - 1;
-        }
+    } else {
+        currentPokemon = pokemon.length - 1;
+    }
 }
 
 function cardHtml(pokedexData) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
