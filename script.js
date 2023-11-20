@@ -1,3 +1,9 @@
+const TYPE_COLORS = {
+    types: ['bug', 'dark', 'dragon', 'electric', 'fairy', 'fighting', 'fire', 'flying', 'ghost', 'grass', 'ground', 'ice', 'normal', 'poison', 'psychic', 'rock', 'steel', 'water'],
+    colors: ['#3A9A54', '#5C5879', '#448994', '#FCF872', '#E71469', '#ED6237', '#FF4A5A', '#93B2C7', '#8E6890', '#26CB4C', '#A96F2F', '#D8F0FA', '#CB97A7', '#9D68D9', '#F41E90', '#893E23', '#42BD94', '#85A9FE'],
+    colors_dark: ['#1C4B27', '#040706', '#458A95', '#E3E32B', '#981844', '#984025', '#AB1F23', '#4C667C', '#33336B', '#147B3C', '#A7702C', '#86D2F5', '#75515B', '#5E2D88', '#A42A6C', '#4A180C', '#5F756D', '#1552E4']
+};
+
 let pokemon = [];
 let currentPokemon = 0;
 
@@ -31,10 +37,11 @@ function renderPokedex() {
         const data = pokedexData(i);
         const type1 = data[4];
         pokedex.innerHTML += cardHtml(data);
+        pokedexSetBgColor(data);
         if (type1) {
-            const id = `pokedexCardLeft${data[0]}`;
-            const card = document.getElementById(id);
-            card.innerHTML += typeHtml(type1);
+            const id = `pokedexCardLeft${i}`;
+            const container = document.getElementById(id);
+            container.innerHTML += typeHtml(type1);
         }
     }
 }
@@ -56,19 +63,15 @@ function pokedexData(pokemonIndex) {
     return [pokemonIndex, name, imgUrl, type0, type1];
 }
 
-function cardHtml(pokedexData) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
-    return /* html */ `
-        <div class="pokedexCard" onclick="view(${pokedexData[0]})">
-        <div class="pokedexCardLeft" id="pokedexCardLeft${pokedexData[0]}">
-            <h1>${pokedexData[1]}</h1>
-            <span class="pokedexType">${pokedexData[3]}</span>
-        </div>
-        <div class="pokedexCardRight">
-            <svg class="pokedexBgEllipse"></svg>
-            <img class="pokedexImg" src="${pokedexData[2]}">
-        </div>
-    </div>
-`;
+function pokedexSetBgColor(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
+    const card = document.getElementById(`pokedexCard${data[0]}`);
+    card.style.background = getTypeColor(data[3]);
+}
+
+function getTypeColor(type) {
+    type = type.toLowerCase(); // klein schreiben, da Parameter in Großschreibweise übergeben wurde
+    let index = TYPE_COLORS['types'].indexOf(type);
+    return TYPE_COLORS['colors'][index];
 }
 
 function view(pokemonIndex) {
@@ -128,6 +131,21 @@ function decrementCurrent() {
         } else {
             currentPokemon = pokemon.length - 1;
         }
+}
+
+function cardHtml(pokedexData) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
+    return /* html */ `
+        <div class="pokedexCard" id="pokedexCard${pokedexData[0]}" onclick="view(${pokedexData[0]})">
+        <div class="pokedexCardLeft" id="pokedexCardLeft${pokedexData[0]}">
+            <h1>${pokedexData[1]}</h1>
+            <span class="pokedexType">${pokedexData[3]}</span>
+        </div>
+        <div class="pokedexCardRight">
+            <svg class="pokedexBgEllipse"></svg>
+            <img class="pokedexImg" src="${pokedexData[2]}">
+        </div>
+    </div>
+`;
 }
 
 function typeHtml(type) {
