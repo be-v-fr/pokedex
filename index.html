@@ -25,25 +25,25 @@
             <div class="viewerBottom">
                 <img id="viewerPokemonImg" src="" alt="Bild">
                 <nav>
-                    <button onclick="">About</button>
-                    <button onclick="">Stats</button>
+                    <button onclick="showViewerSection('viewerAbout')">About</button>
+                    <button onclick="showViewerSection('viewerStats')">Stats</button>
                 </nav>
                 <section id="viewerAbout">
                     <table class="aboutTable">
                         <tr>
-                            <td class="aboutLeft">Poké-ID:</td>
+                            <td class="tableLeft">Poké-ID:</td>
                             <td id="pokeId"></td>
                         </tr>
                         <tr>
-                            <td class="aboutLeft">Height:</td>
+                            <td class="tableLeft">Height:</td>
                             <td id="height"></td>
                         </tr>
                         <tr>
-                            <td class="aboutLeft">Weight:</td>
+                            <td class="tableLeft">Weight:</td>
                             <td id="weight"></td>
                         </tr>
                         <tr>
-                            <td class="tdAbilities aboutLeft">Abilities:</td>
+                            <td class="tdAbilities tableLeft">Abilities:</td>
                             <td>
                                 <ul id="abilities"></ul>
                             </td>
@@ -51,7 +51,7 @@
                     </table>
                 </section>
                 <section id="viewerStats" style="display: none">
-                    test
+                    <table id="statsTable"></table>
                 </section>
             </div>
         </div>

@@ -114,6 +114,7 @@ function toggleViewer(event) {
 function renderPokemonToViewer(pokemonIndex) {
     renderViewerBasic(pokemonIndex);
     renderViewerAboutSection(pokemonIndex);
+    renderViewerStatsSection(pokemonIndex);
 }
 
 function renderViewerBasic(pokemonIndex) {
@@ -179,6 +180,37 @@ function renderAbilities(pokemonIndex) {
     }
 }
 
+function renderViewerStatsSection(pokemonIndex) {
+    const stats = pokemon[pokemonIndex]['stats'];
+    const table = document.getElementById('statsTable');
+    table.innerHTML ='';
+    for (let i = 0; i < 6; i++) {
+        renderStat(stats, i);
+    }
+}
+
+function renderStat(stats, statsIndex) {
+    const table = document.getElementById('statsTable');
+    const value = stats[statsIndex]['base_stat'];
+    let name = stats[statsIndex]['stat']['name'];
+    if(statsIndex == 0) { // Formatierung des Namens
+        name = 'HP'; // notwendig, da Abkürzung Sonderfall ist
+    } else {
+        name = capitalizeFirstLetter(name);
+        name = removeHyphens(name);
+    }
+    table.innerHTML += statsHtml(name, value);
+}
+
+function showViewerSection(sectionId) {
+    const about = document.getElementById('viewerAbout');
+    const stats = document.getElementById('viewerStats');
+    const showSection = document.getElementById(`${sectionId}`);
+    about.style.display = 'none';
+    stats.style.display = 'none';
+    showSection.style.display = '';
+}
+
 function nextPokemon(next) {
     if (next) {
         incrementCurrent();
@@ -225,6 +257,11 @@ function typeHtml(type) {
     `;
 }
 
-function viewerHtml(pokemonJson) {
-
+function statsHtml(name, value) {
+    return /* html */ `
+        <tr>
+            <td class="tableLeft">${name}</td>
+            <td id="${name}">${value}</td>
+        </tr>
+    `;
 }
