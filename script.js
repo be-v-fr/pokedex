@@ -45,6 +45,10 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function removeHyphens(string) {
+    return string.replace(/-/g, ' ');
+}
+
 function renderPokedex() {
     const pokedex = document.getElementById('pokedex');
     pokedex.innerHTML = '';
@@ -108,6 +112,11 @@ function toggleViewer(event) {
 }
 
 function renderPokemonToViewer(pokemonIndex) {
+    renderViewerBasic(pokemonIndex);
+    renderViewerAboutSection(pokemonIndex);
+}
+
+function renderViewerBasic(pokemonIndex) {
     const basicData = pokedexData(pokemonIndex); // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
     const name = document.getElementById('viewerName');
     const types = document.getElementById('viewerTypes');
@@ -126,6 +135,48 @@ function renderPokemonToViewer(pokemonIndex) {
 function setViewerBgColor(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
     const viewer = document.getElementById('viewerTop');
     viewer.style.background = getTypeColor(data[3]);
+}
+
+function renderViewerAboutSection(pokemonIndex) {
+    const idContainer = document.getElementById('pokeId');
+    const heightContainer = document.getElementById('height');
+    const weightContainer = document.getElementById('weight');
+
+    idContainer.innerHTML = getPokeId(pokemonIndex);
+    heightContainer.innerHTML = getHeight(pokemonIndex);
+    weightContainer.innerHTML = getWeight(pokemonIndex);
+    renderAbilities(pokemonIndex);
+}
+
+function getPokeId(pokemonIndex) {
+    let id = '00'  + pokemonIndex; // füge vor der Zahl zwei Nullen hinzu
+    id = id.slice(-3); // entferne alles vor den letzten drei Zeichen
+    return '#' + id; 
+}
+
+function getHeight(pokemonIndex) {
+    let height = pokemon[pokemonIndex]['height']; // dm
+    height /= 10; // m
+    return height + ' m';
+}
+
+function getWeight(pokemonIndex) {
+    let weight = pokemon[pokemonIndex]['weight']; // cg
+    weight /= 10; // kg
+    return weight + ' kg';    
+}
+
+function renderAbilities(pokemonIndex) {
+    const abilitiesContainer = document.getElementById('abilities');
+    const abilities = pokemon[pokemonIndex]['abilities'];
+    abilitiesContainer.innerHTML = '';
+
+    for (let i = 0; i < abilities.length; i++) {
+        let ability = abilities[i]['ability']['name'];
+        ability = capitalizeFirstLetter(ability);
+        ability = removeHyphens(ability);
+        abilitiesContainer.innerHTML += '<li>' + ability + '</li>';
+    }
 }
 
 function nextPokemon(next) {

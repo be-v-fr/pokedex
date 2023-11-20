@@ -24,6 +24,35 @@
             </div>
             <div class="viewerBottom">
                 <img id="viewerPokemonImg" src="" alt="Bild">
+                <nav>
+                    <button onclick="">About</button>
+                    <button onclick="">Stats</button>
+                </nav>
+                <section id="viewerAbout">
+                    <table class="aboutTable">
+                        <tr>
+                            <td class="aboutLeft">Poké-ID:</td>
+                            <td id="pokeId"></td>
+                        </tr>
+                        <tr>
+                            <td class="aboutLeft">Height:</td>
+                            <td id="height"></td>
+                        </tr>
+                        <tr>
+                            <td class="aboutLeft">Weight:</td>
+                            <td id="weight"></td>
+                        </tr>
+                        <tr>
+                            <td class="tdAbilities aboutLeft">Abilities:</td>
+                            <td>
+                                <ul id="abilities"></ul>
+                            </td>
+                        </tr>                  
+                    </table>
+                </section>
+                <section id="viewerStats" style="display: none">
+                    test
+                </section>
             </div>
         </div>
         <button onclick="event.stopPropagation(); nextPokemon(true);">weiter</button>
