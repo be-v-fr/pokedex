@@ -84,10 +84,11 @@ function pokedexData(pokemonIndex) {
 
 function setPokedexBgColor(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
     const card = document.getElementById(`pokedexCard${data[0]}`);
-    card.style.background = getTypeColor(data[3]);
+    card.style.background = getTypeColor(data[0]);
 }
 
-function getTypeColor(type) {
+function getTypeColor(pokemonIndex) {
+    let type = pokedexData(pokemonIndex)[3];
     type = type.toLowerCase(); // klein schreiben, da Parameter in Großschreibweise übergeben wurde
     return TYPE_COLORS[`${type}`];
 }
@@ -112,9 +113,11 @@ function toggleViewer(event) {
 }
 
 function renderPokemonToViewer(pokemonIndex) {
+    const typeColor = getTypeColor(pokemonIndex);
     renderViewerBasic(pokemonIndex);
     renderViewerAboutSection(pokemonIndex);
     renderViewerStatsSection(pokemonIndex);
+    setViewerColor(typeColor);
 }
 
 function renderViewerBasic(pokemonIndex) {
@@ -130,15 +133,16 @@ function renderViewerBasic(pokemonIndex) {
         types.innerHTML += typeHtml(basicData[4]);
     }
     pokemonImg.src = basicData[2];
-    setViewerBgColor(basicData);
 }
 
-function setViewerBgColor(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
-    const viewer = document.getElementById('viewerTop');
-    viewer.style.background = getTypeColor(data[3]);
+function setViewerColor(color) {
+    const viewerTop = document.getElementById('viewerTop');
+    const viewerBottom = document.getElementById('viewerBottom');
+    viewerTop.style.background = color;
+    viewerBottom.style.color = color;
 }
 
-function renderViewerAboutSection(pokemonIndex) {
+function renderViewerAboutSection(pokemonIndex, color) {
     const idContainer = document.getElementById('pokeId');
     const heightContainer = document.getElementById('height');
     const weightContainer = document.getElementById('weight');
@@ -180,7 +184,7 @@ function renderAbilities(pokemonIndex) {
     }
 }
 
-function renderViewerStatsSection(pokemonIndex) {
+function renderViewerStatsSection(pokemonIndex, color) {
     const stats = pokemon[pokemonIndex]['stats'];
     const table = document.getElementById('statsTable');
     table.innerHTML ='';
@@ -261,7 +265,7 @@ function statsHtml(name, value) {
     return /* html */ `
         <tr>
             <td class="tableLeft">${name}</td>
-            <td id="${name}">${value}</td>
+            <td id="${name}" class="tableRight">${value}</td>
         </tr>
     `;
 }

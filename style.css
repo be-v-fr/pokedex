@@ -17,10 +17,6 @@ body.no-scroll {
     /* Verhindert das Scrollen auf der ursprünglichen Website */
 }
 
-.hidden {
-    display: none !important;
-}
-
 h1 {
     margin: 0;
     font-size: 24px;
@@ -43,13 +39,13 @@ h1 {
     padding: var(--pokedex-padding);
     display: flex;
     box-shadow: var(--shadowing-l);
-    transition: 125ms;
+    transition: 125ms ease-in-out;
 }
 
 .pokedexCard:hover {
     cursor: pointer;
     transform: scale(1.04);
-    transition: 125ms;
+    transition: 100ms ease-in-out;
 }
 
 .pokedexType {
@@ -116,9 +112,8 @@ h1 {
     margin-bottom: 10px;
 }
 
-.viewerBottom {
+#viewerBottom {
     background: white;
-    color: black;
     border-radius: var(--border-radius-l);
     height: 50%;
     margin-top: -20px;
@@ -143,6 +138,11 @@ section {
 
 .tableLeft {
     width: calc(var(--viewerWidth) * 0.5);
+    font-weight: bold;
+}
+
+.tableRight {
+    color: black;
 }
 
 .tdAbilities {
