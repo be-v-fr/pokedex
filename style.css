@@ -28,6 +28,7 @@ h1 {
 .pokedexCard {
     width: 240px;
     height: 160px;
+    color: white;
     border-radius: var(--border-radius-l);
     padding: var(--pokedex-padding);
     display: flex;
@@ -85,8 +86,7 @@ h1 {
     border-radius: var(--border-radius-l);
 }
 
-.viewerTop {
-    background: yellow;
+#viewerTop {
     border-radius: var(--border-radius-l);
     flex: 1;
     padding: var(--pokedex-padding);

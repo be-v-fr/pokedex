@@ -37,7 +37,7 @@ function renderPokedex() {
         const data = pokedexData(i);
         const type1 = data[4];
         pokedex.innerHTML += cardHtml(data);
-        pokedexSetBgColor(data);
+        setPokedexBgColor(data);
         if (type1) {
             const id = `pokedexCardLeft${i}`;
             const container = document.getElementById(id);
@@ -63,7 +63,7 @@ function pokedexData(pokemonIndex) {
     return [pokemonIndex, name, imgUrl, type0, type1];
 }
 
-function pokedexSetBgColor(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
+function setPokedexBgColor(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
     const card = document.getElementById(`pokedexCard${data[0]}`);
     card.style.background = getTypeColor(data[3]);
 }
@@ -106,6 +106,12 @@ function renderPokemonToViewer(pokemonIndex) {
         types.innerHTML += typeHtml(basicData[4]);
     }
     pokemonImg.src = basicData[2];
+    setViewerBgColor(basicData);
+}
+
+function setViewerBgColor(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
+    const viewer = document.getElementById('viewerTop');
+    viewer.style.background = getTypeColor(data[3]);
 }
 
 function nextPokemon(next) {
