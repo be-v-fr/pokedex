@@ -37,6 +37,13 @@ h1 {
     padding: var(--pokedex-padding);
     display: flex;
     box-shadow: var(--shadowing-l);
+    transition: 125ms;
+}
+
+.pokedexCard:hover {
+    cursor: pointer;
+    transform: scale(1.04);
+    transition: 125ms;
 }
 
 .pokedexType {
