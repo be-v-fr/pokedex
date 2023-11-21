@@ -23,6 +23,12 @@ h1 {
     text-shadow: var(--shadowing-s);
 }
 
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
 #pokedex {
     display: flex;
     flex-wrap: wrap;
@@ -79,14 +85,37 @@ h1 {
 }
 
 .overlay {
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     position: fixed;
+    gap: 16px;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
+}
+
+.iconBtn {
+    filter: drop-shadow(var(--shadowing-s));
+    transition: 125ms ease-in-out;
+}
+
+.iconBtn:hover {
+    transform: scale(1.2);
+    transition: 75ms ease-in-out;
+}
+
+.arrow {
+    background: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+}
+
+#iconBtnWrapper {
+    display: flex;
+    justify-content: flex-end;
 }
 
 #pokemonViewer {

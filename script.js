@@ -118,6 +118,7 @@ function renderPokemonToViewer(pokemonIndex) {
     renderViewerAboutSection(pokemonIndex);
     renderViewerStatsSection(pokemonIndex);
     setViewerColor(typeColor);
+    setButtonColor(typeColor);
 }
 
 function renderViewerBasic(pokemonIndex) {
@@ -140,6 +141,13 @@ function setViewerColor(color) {
     const viewerBottom = document.getElementById('viewerBottom');
     viewerTop.style.background = color;
     viewerBottom.style.color = color;
+}
+
+function setButtonColor(color) {
+    const arrowLeft = document.getElementById('arrowLeft');
+    const arrowRight = document.getElementById('arrowRight');
+    arrowLeft.style.stroke = color;
+    arrowRight.style.stroke = color;
 }
 
 function renderViewerAboutSection(pokemonIndex, color) {
