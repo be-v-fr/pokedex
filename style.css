@@ -5,7 +5,24 @@
     --shadowing-l: 2px 2px 4px rgba(0, 0, 0, 0.25);
     --shadowing-s: 1px 1px 2px rgba(0, 0, 0, 0.3);
     --viewer-width: 350px;
-    --scrollbar-width: 17px;
+    --scrollbar-width: 10px;
+}
+
+::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-track {
+    background: #f0ebe7;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c7beb6;
+    border-radius: calc(var(--scrollbar-width) / 2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a1968d;
 }
 
 body {
@@ -40,7 +57,7 @@ button {
     gap: var(--pokedex-padding);
     padding: var(--pokedex-padding);
     padding-right: calc(var(--pokedex-padding) + var(--scrollbar-width));
-    background: #C8BEB7;
+    background: #f0ebe7;
     background-size: 92vw;
     background-position: center;
     background-repeat: no-repeat;
@@ -68,7 +85,7 @@ button {
 
 .pokeballBg {
     height: 100%;
-    opacity: 0.1;
+    opacity: 0.08;
     position: absolute;
     right: -30px;
     bottom: -40px;
