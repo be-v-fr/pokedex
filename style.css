@@ -4,12 +4,16 @@
     --border-radius-s: 8px;
     --shadowing-l: 2px 2px 4px rgba(0, 0, 0, 0.25);
     --shadowing-s: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    --viewerWidth: 350px;
+    --viewer-width: 350px;
+    --scrollbar-width: 17px;
 }
 
 body {
     margin: 0;
     font-family: 'Open Sans';
+    overflow-x: hidden;
+    margin-right: calc(100% - 100vw);
+    /* Unabhängigkeit vom Scrollbalken */
 }
 
 body.no-scroll {
@@ -35,6 +39,7 @@ button {
     justify-content: center;
     gap: var(--pokedex-padding);
     padding: var(--pokedex-padding);
+    padding-right: calc(var(--pokedex-padding) + var(--scrollbar-width));
 }
 
 .pokedexCard {
@@ -124,7 +129,7 @@ button {
     flex-direction: column;
     justify-content: space-between;
     color: white;
-    width: var(--viewerWidth);
+    width: var(--viewer-width);
     height: 650px;
     background: none;
     border-radius: var(--border-radius-l);
