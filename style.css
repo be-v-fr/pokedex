@@ -40,6 +40,11 @@ button {
     gap: var(--pokedex-padding);
     padding: var(--pokedex-padding);
     padding-right: calc(var(--pokedex-padding) + var(--scrollbar-width));
+    background: lightgray;
+    background-image: url(./img/pokeball.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .pokedexCard {
