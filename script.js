@@ -84,7 +84,7 @@ function pokedexData(pokemonIndex) {
 
 function setPokedexBgColor(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
     const card = document.getElementById(`pokedexCard${data[0]}`);
-    card.style.background = getTypeColor(data[0]);
+     card.style.backgroundColor = getTypeColor(data[0]);
 }
 
 function getTypeColor(pokemonIndex) {
@@ -162,9 +162,9 @@ function renderViewerAboutSection(pokemonIndex, color) {
 }
 
 function getPokeId(pokemonIndex) {
-    let id = '00'  + pokemonIndex; // füge vor der Zahl zwei Nullen hinzu
+    let id = '00' + pokemonIndex; // füge vor der Zahl zwei Nullen hinzu
     id = id.slice(-3); // entferne alles vor den letzten drei Zeichen
-    return '#' + id; 
+    return '#' + id;
 }
 
 function getHeight(pokemonIndex) {
@@ -176,7 +176,7 @@ function getHeight(pokemonIndex) {
 function getWeight(pokemonIndex) {
     let weight = pokemon[pokemonIndex]['weight']; // cg
     weight /= 10; // kg
-    return weight + ' kg';    
+    return weight + ' kg';
 }
 
 function renderAbilities(pokemonIndex) {
@@ -195,7 +195,7 @@ function renderAbilities(pokemonIndex) {
 function renderViewerStatsSection(pokemonIndex, color) {
     const stats = pokemon[pokemonIndex]['stats'];
     const table = document.getElementById('statsTable');
-    table.innerHTML ='';
+    table.innerHTML = '';
     for (let i = 0; i < 6; i++) {
         renderStat(stats, i);
     }
@@ -205,7 +205,7 @@ function renderStat(stats, statsIndex) {
     const table = document.getElementById('statsTable');
     const value = stats[statsIndex]['base_stat'];
     let name = stats[statsIndex]['stat']['name'];
-    if(statsIndex == 0) { // Formatierung des Namens
+    if (statsIndex == 0) { // Formatierung des Namens
         name = 'HP'; // notwendig, da Abkürzung Sonderfall ist
     } else {
         name = capitalizeFirstLetter(name);
@@ -251,15 +251,15 @@ function decrementCurrent() {
 function cardHtml(pokedexData) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
     return /* html */ `
         <div class="pokedexCard" id="pokedexCard${pokedexData[0]}" onclick="view(${pokedexData[0]})">
-        <div class="pokedexCardLeft" id="pokedexCardLeft${pokedexData[0]}">
-            <h1>${pokedexData[1]}</h1>
-            <span class="pokedexType">${pokedexData[3]}</span>
+            <img class="pokeballBg" src="./img/pokeball.svg">
+            <div class="pokedexCardLeft" id="pokedexCardLeft${pokedexData[0]}">
+                <h1>${pokedexData[1]}</h1>
+                <span class="pokedexType">${pokedexData[3]}</span>
+            </div>
+            <div class="pokedexCardRight">
+                <img class="pokedexImg" src="${pokedexData[2]}">
+            </div>
         </div>
-        <div class="pokedexCardRight">
-            <svg class="pokedexBgEllipse"></svg>
-            <img class="pokedexImg" src="${pokedexData[2]}">
-        </div>
-    </div>
 `;
 }
 

@@ -40,8 +40,8 @@ button {
     gap: var(--pokedex-padding);
     padding: var(--pokedex-padding);
     padding-right: calc(var(--pokedex-padding) + var(--scrollbar-width));
-    background: lightgray;
-    background-image: url(./img/pokeball.svg);
+    background: #C8BEB7;
+    background-size: 92vw;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -50,12 +50,14 @@ button {
 .pokedexCard {
     width: 240px;
     height: 160px;
+    display: flex;
     color: white;
     border-radius: var(--border-radius-l);
     padding: var(--pokedex-padding);
-    display: flex;
     box-shadow: var(--shadowing-l);
     transition: 125ms ease-in-out;
+    position: relative;
+    overflow: hidden;
 }
 
 .pokedexCard:hover {
@@ -64,15 +66,21 @@ button {
     transition: 100ms ease-in-out;
 }
 
+.pokeballBg {
+    height: 100%;
+    opacity: 0.1;
+    position: absolute;
+    right: -30px;
+    bottom: -40px;
+    object-fit: cover;
+    overflow: hidden;
+}
+
 .pokedexType {
     background: rgba(0, 0, 0, 0.1);
     border-radius: var(--border-radius-s);
     padding: 3px;
     width: fit-content;
-}
-
-.pokedexBgEllipse {
-    display: none;
 }
 
 .pokedexCardLeft {
