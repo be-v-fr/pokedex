@@ -195,9 +195,10 @@ button {
 }
 
 nav {
+    padding-top: var(--pokedex-padding);
     display: flex;
     justify-content: center;
-    gap: 24px;
+    gap: calc(var(--pokedex-padding) * 2);
 }
 
 nav>button {
@@ -241,25 +242,42 @@ nav>button {
     transform-origin: bottom left;
     transition: transform 125ms ease-in-out;
 }
-  
 
 section {
+    width: var(--viewer-width);
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.viewerTable {
     width: 100%;
-    padding: var(--pokedex-padding);
+    padding-bottom: var(--pokedex-padding);
+}
+
+.viewerTable>tbody>tr>td {
+    width: 50%;
+    padding-bottom: 2px;
 }
 
 .tableLeft {
-    width: calc(var(--viewerWidth) * 0.5);
     font-weight: bold;
+    text-align: right;
+    padding-right: var(--pokedex-padding);
 }
 
 .tableRight {
     color: black;
+    padding-left: var(--pokedex-padding);
+}
+
+#pokeId {
+    color: #888888;
 }
 
 .tdAbilities {
-    display: flex;
-    align-items: flex-start;
+    vertical-align: top;
 }
 
 #abilities {
