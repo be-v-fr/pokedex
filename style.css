@@ -56,6 +56,12 @@ form {
 
 .searchPokeballImg {
     width: 32px;
+    transition: 125ms ease-in-out;
+}
+
+.searchPokeballImg:hover {
+    transform: rotate(18deg);
+    transition: 125ms ease-in-out;
 }
 
 h1 {

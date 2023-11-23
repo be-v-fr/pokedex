@@ -50,24 +50,26 @@ function removeHyphens(string) {
     return string.replace(/-/g, ' ');
 }
 
-function renderPokedex(pokemonArray) {
+function renderPokedex(pokemonArray) { // rendern je nach Array, auch bei Suchfilter
     const pokedex = document.getElementById('pokedex');
     pokedex.innerHTML = '';
     for (let i = 0; i < pokemonArray.length; i++) {
-        const data = pokedexData(i);
+        const pokeId = pokedexData(pokemonArray, i)[0]; // offizielle ID des Pokemon, Zählung startet bei 1
+        const data = pokedexData(pokemon, pokeId - 1); // erzeuge zugehörige Daten aus vollständigem Array, PokeId um 1 verringern
         const type1 = data[4];
         pokedex.innerHTML += cardHtml(data);
-        setPokedexBgColor(data);
+        setPokedexBgColor(pokeId);
         if (type1) {
-            const id = `pokedexCardLeft${i}`;
-            const container = document.getElementById(id);
+            const containerId = `pokedexCardLeft${pokeId}`;
+            const container = document.getElementById(containerId);
             container.innerHTML += typeHtml(type1);
         }
     }
 }
 
-function pokedexData(pokemonIndex) {
-    let pokemonJson = pokemon[pokemonIndex];
+function pokedexData(pokemonArray, pokemonIndex) {
+    let pokemonJson = pokemonArray[pokemonIndex];
+    let pokeId = pokemonJson['id'];
     let name = pokemonJson['name'];
     let imgUrl = pokemonJson['sprites']['other']['official-artwork']['front_default'];
     let type0 = pokemonJson['types']['0']['type']['name'];
@@ -80,16 +82,16 @@ function pokedexData(pokemonIndex) {
         type1 = capitalizeFirstLetter(type1);
     }
 
-    return [pokemonIndex, name, imgUrl, type0, type1];
+    return [pokeId, name, imgUrl, type0, type1];
 }
 
-function setPokedexBgColor(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
-    const card = document.getElementById(`pokedexCard${data[0]}`);
-     card.style.backgroundColor = getTypeColor(data[0]);
+function setPokedexBgColor(pokeId) {
+    const card = document.getElementById(`pokedexCard${pokeId}`);
+    card.style.backgroundColor = getTypeColor(pokeId - 1);
 }
 
 function getTypeColor(pokemonIndex) {
-    let type = pokedexData(pokemonIndex)[3];
+    let type = pokedexData(pokemon, pokemonIndex)[3];
     type = type.toLowerCase(); // klein schreiben, da Parameter in Großschreibweise übergeben wurde
     return TYPE_COLORS[`${type}`];
 }
@@ -124,7 +126,7 @@ function renderPokemonToViewer(pokemonIndex) {
 }
 
 function renderViewerBasic(pokemonIndex) {
-    const basicData = pokedexData(pokemonIndex); // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
+    const basicData = pokedexData(pokemon, pokemonIndex); // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
     const name = document.getElementById('viewerName');
     const types = document.getElementById('viewerTypes');
     const pokemonImg = document.getElementById('viewerPokemonImg');
@@ -310,9 +312,8 @@ function filterPokemon() {
     let search = document.getElementById('searchInput').value;
     let pokemonFiltered = [];
     search = search.toLowerCase();
-    
     for (let i = 0; i < pokemon.length; i++) {
-        let data = pokedexData(i); // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
+        let data = pokedexData(pokemon, i); // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
         data[1] = data[1].toLowerCase();
         data[3] = data[3].toLowerCase();
         data[4] = data[4].toLowerCase();
@@ -326,32 +327,30 @@ function filterPokemon() {
             }
         }
     }
-
     showFilterNumber(pokemonFiltered);
-
     return pokemonFiltered;
 }
 
 function showFilterNumber(pokemonArray, search) {
     const number = pokemonArray.length;
     const numberContainer = document.getElementById('searchNumber');
-    if(search != '') {
+    if(search != '' && number < pokemon.length) {
         numberContainer.innerHTML = 'x ' + number;
     } else {
         numberContainer.innerHTML = '';
     } 
 }
 
-function cardHtml(pokedexData) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
+function cardHtml(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
     return /* html */ `
-        <div class="pokedexCard" id="pokedexCard${pokedexData[0]}" onclick="view(${pokedexData[0]})">
+        <div class="pokedexCard" id="pokedexCard${data[0]}" onclick="view(${data[0]})">
             <img class="pokeballBg" src="./img/pokeball.svg">
-            <div class="pokedexCardLeft" id="pokedexCardLeft${pokedexData[0]}">
-                <h1>${pokedexData[1]}</h1>
-                <span class="pokedexType">${pokedexData[3]}</span>
+            <div class="pokedexCardLeft" id="pokedexCardLeft${data[0]}">
+                <h1>${data[1]}</h1>
+                <span class="pokedexType">${data[3]}</span>
             </div>
             <div class="pokedexCardRight">
-                <img class="pokedexImg" src="${pokedexData[2]}">
+                <img class="pokedexImg" src="${data[2]}">
             </div>
         </div>
     `;
