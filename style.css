@@ -27,6 +27,7 @@
 
 body {
     margin: 0;
+    background: #f0ebe7;
     font-family: 'Open Sans';
     overflow-x: hidden;
     margin-right: calc(100% - 100vw);
@@ -56,12 +57,8 @@ button {
     justify-content: center;
     gap: var(--pokedex-padding);
     padding: var(--pokedex-padding);
+    padding-bottom: none;
     padding-right: calc(var(--pokedex-padding) + var(--scrollbar-width));
-    background: #f0ebe7;
-    background-size: 92vw;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
 }
 
 .pokedexCard {
@@ -218,4 +215,22 @@ section {
     list-style-type: none;
     padding: 0;
     display: contents;
+}
+
+footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+    padding-top: var(--pokedex-padding);
+    padding-right: calc(var(--pokedex-padding) + var(--scrollbar-width));
+}
+
+.footerLink {
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
+
+.footerLink:hover {
+    color: #606060;
 }
