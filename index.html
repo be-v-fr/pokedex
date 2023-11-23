@@ -39,8 +39,8 @@
             <div id="viewerBottom">
                 <img id="viewerPokemonImg" src="" alt="Bild">
                 <nav>
-                    <button onclick="showViewerSection('viewerAbout')">About</button>
-                    <button onclick="showViewerSection('viewerStats')">Stats</button>
+                    <button id="navAbout" class="navActive" onclick="showViewerSection('about')">About</button>
+                    <button id="navStats" class="navInactive navRight" onclick="showViewerSection('stats')">Stats</button>
                 </nav>
                 <section id="viewerAbout">
                     <table id="aboutTable" class="aboutTable">

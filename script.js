@@ -21,6 +21,7 @@ const TYPE_COLORS = {
 
 let pokemon = [];
 let currentPokemon = 0;
+let currentSection = 'about';
 
 async function init() {
     await loadPokemon();
@@ -119,6 +120,7 @@ function renderPokemonToViewer(pokemonIndex) {
     renderViewerStatsSection(pokemonIndex);
     setViewerColor(typeColor);
     setButtonColor(typeColor);
+    setNavDisplay(currentSection);
 }
 
 function renderViewerBasic(pokemonIndex) {
@@ -150,7 +152,7 @@ function setButtonColor(color) {
     arrowRight.style.stroke = color;
 }
 
-function renderViewerAboutSection(pokemonIndex, color) {
+function renderViewerAboutSection(pokemonIndex) {
     const idContainer = document.getElementById('pokeId');
     const heightContainer = document.getElementById('height');
     const weightContainer = document.getElementById('weight');
@@ -214,13 +216,58 @@ function renderStat(stats, statsIndex) {
     table.innerHTML += statsHtml(name, value);
 }
 
-function showViewerSection(sectionId) {
+function showViewerSection(section) {
     const about = document.getElementById('viewerAbout');
     const stats = document.getElementById('viewerStats');
-    const showSection = document.getElementById(`${sectionId}`);
-    about.style.display = 'none';
-    stats.style.display = 'none';
-    showSection.style.display = '';
+    currentSection = section;
+    setNavDisplay(section);
+    if(section == 'about') {
+        stats.style.display = 'none';
+        about.style.display = '';
+    } else {
+        stats.style.display = '';
+        about.style.display = 'none';
+    }
+}
+
+function setNavDisplay(section) {
+    setNavColor(section);
+    setNavCss(section);
+}
+
+function setNavColor(section) {
+    const about = document.getElementById('navAbout');
+    const stats = document.getElementById('navStats');
+    const typeColor = getTypeColor(currentPokemon);
+    if(section == 'about') {
+        about.style.color = typeColor;
+        about.style.borderColor = typeColor;
+        stats.style.color = '';
+    } else {
+        about.style.color = '';
+        stats.style.borderColor = typeColor;
+        stats.style.color = typeColor;
+    }
+}
+
+function setNavCss(section) {
+    const about = document.getElementById('navAbout');
+    const stats = document.getElementById('navStats');
+    if (section == 'about') {
+        about.classList.add('navActive');
+        about.classList.remove('navInactive');
+        about.classList.remove('navLeft');
+        stats.classList.remove('navActive');
+        stats.classList.add('navInactive');
+        stats.classList.add('navRight');
+    } else {
+        about.classList.remove('navActive');
+        about.classList.add('navInactive');
+        about.classList.add('navLeft');
+        stats.classList.add('navActive');
+        stats.classList.remove('navInactive');
+        stats.classList.remove('navRight');      
+    }
 }
 
 function nextPokemon(next) {
