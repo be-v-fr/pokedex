@@ -13,6 +13,16 @@
 </head>
 
 <body onload="init()">
+    <header>
+        <form onsubmit="searchPokemon(); return false" action="">
+            <input type="text" id="searchInput" placeholder="Search Pokémon" onkeydown="filterPokemon()" onkeyup="filterPokemon()">
+            <button type="submit" class="searchPokeballBtn">
+                <img class="searchPokeballImg" src="./img/pokeball_icon.png">
+            </button>
+            <p id="searchNumber"></p>
+        </form>
+    </header>
+
     <div id="pokedex"></div>
 
     <div class="overlay" id="overlay" onclick="toggleViewer(event)" style="display: none">
@@ -40,7 +50,8 @@
                 <img id="viewerPokemonImg" src="" alt="Bild">
                 <nav>
                     <button id="navAbout" class="navActive" onclick="showViewerSection('about')">About</button>
-                    <button id="navStats" class="navInactive navRight" onclick="showViewerSection('stats')">Stats</button>
+                    <button id="navStats" class="navInactive navRight"
+                        onclick="showViewerSection('stats')">Stats</button>
                 </nav>
                 <section id="viewerAbout">
                     <table id="aboutTable" class="viewerTable">
@@ -78,13 +89,11 @@
     </div>
 
     <footer>
-            <a href="http://bengt-fruechtenicht.developerakademie.net/impressum.html"
-                class="footerLink">Impressum</a>
-            |
-            <a href="http://bengt-fruechtenicht.developerakademie.net/datenschutz.html"
-                class="footerLink">Datenschutz</a>
-            |
-            <a href="./credits.html" class="footerLink">Credits</a>
+        <a href="http://bengt-fruechtenicht.developerakademie.net/impressum.html" class="footerLink">Impressum</a>
+        |
+        <a href="http://bengt-fruechtenicht.developerakademie.net/datenschutz.html" class="footerLink">Datenschutz</a>
+        |
+        <a href="./credits.html" class="footerLink">Credits</a>
     </footer>
 </body>
 

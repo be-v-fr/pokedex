@@ -25,7 +25,7 @@ let currentSection = 'about';
 
 async function init() {
     await loadPokemon();
-    renderPokedex();
+    renderPokedex(pokemon);
 }
 
 async function loadPokemon() {
@@ -50,10 +50,10 @@ function removeHyphens(string) {
     return string.replace(/-/g, ' ');
 }
 
-function renderPokedex() {
+function renderPokedex(pokemonArray) {
     const pokedex = document.getElementById('pokedex');
     pokedex.innerHTML = '';
-    for (let i = 0; i < pokemon.length; i++) {
+    for (let i = 0; i < pokemonArray.length; i++) {
         const data = pokedexData(i);
         const type1 = data[4];
         pokedex.innerHTML += cardHtml(data);
@@ -295,6 +295,53 @@ function decrementCurrent() {
     }
 }
 
+function searchPokemon() {
+    renderPokedex(filterPokemon());
+    resetSearch();
+}
+
+function resetSearch() {
+    const input = document.getElementById('searchInput');
+    input.value = '';
+    showFilterNumber([], '');
+}
+
+function filterPokemon() {
+    let search = document.getElementById('searchInput').value;
+    let pokemonFiltered = [];
+    search = search.toLowerCase();
+    
+    for (let i = 0; i < pokemon.length; i++) {
+        let data = pokedexData(i); // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
+        data[1] = data[1].toLowerCase();
+        data[3] = data[3].toLowerCase();
+        data[4] = data[4].toLowerCase();
+        data.splice(2,1); // URL entfernen
+
+        for(let j = 1; j < data.length; j++) { // alle Items durchsuchen
+            let datum = data[j];
+            if(datum.includes(search)) {
+                pokemonFiltered.push(pokemon[i]); // Pokemon zur Auswahl hinzufügen
+                break; // verhindern, dass dasselbe Pokemon mehrfach hinzugefügt wird
+            }
+        }
+    }
+
+    showFilterNumber(pokemonFiltered);
+
+    return pokemonFiltered;
+}
+
+function showFilterNumber(pokemonArray, search) {
+    const number = pokemonArray.length;
+    const numberContainer = document.getElementById('searchNumber');
+    if(search != '') {
+        numberContainer.innerHTML = 'x ' + number;
+    } else {
+        numberContainer.innerHTML = '';
+    } 
+}
+
 function cardHtml(pokedexData) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
     return /* html */ `
         <div class="pokedexCard" id="pokedexCard${pokedexData[0]}" onclick="view(${pokedexData[0]})">
@@ -307,7 +354,7 @@ function cardHtml(pokedexData) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: t
                 <img class="pokedexImg" src="${pokedexData[2]}">
             </div>
         </div>
-`;
+    `;
 }
 
 function typeHtml(type) {
