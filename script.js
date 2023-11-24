@@ -29,13 +29,16 @@ async function init() {
 }
 
 async function loadPokemon() {
+    const pokedex = document.getElementById('pokedex');
     const url = 'https://pokeapi.co/api/v2/pokemon/';
+    pokedex.innerHTML = 'loading Pokémon data...';
     for (let i = 1; i <= 150; i++) {
         let response = await fetch(url + i).catch(errorFunction);
         let responseAsJson = await response.json();
 
         pokemon.push(responseAsJson);
     }
+    pokedex.innerHTML = '';
 }
 
 function errorFunction() {
@@ -97,9 +100,9 @@ function getTypeColor(pokemonIndex) {
 }
 
 function view(pokemonIndex) {
-    currentPokemon = pokemonIndex;
+    currentPokemon = pokemonIndex - 1;
     toggleViewer();
-    renderPokemonToViewer(pokemonIndex);
+    renderPokemonToViewer(currentPokemon);
 }
 
 function toggleViewer(event) {

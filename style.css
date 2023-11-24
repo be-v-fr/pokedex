@@ -52,6 +52,35 @@ header {
 
 form {
     display: flex;
+    align-items: center;
+    height: 48px;
+}
+
+#searchInput {
+    border-radius: var(--border-radius-l);
+    width: 180px;
+    height: 28px;
+    font-size: 16px;
+    padding: 0 6px;
+    border: 1px solid #333;
+    outline: none;
+    transition: 75ms;
+}
+
+#searchInput:focus {
+    border-color: #888888;
+    background: #faf9f9;
+    transition: 75ms;
+}
+
+#searchInput::placeholder {
+    text-align: center;
+    transition: 75ms;
+}
+
+#searchInput:focus::placeholder {
+    color: #faf9f9;
+    transition: 100ms;
 }
 
 .searchPokeballImg {
@@ -62,6 +91,10 @@ form {
 .searchPokeballImg:hover {
     transform: rotate(18deg);
     transition: 125ms ease-in-out;
+}
+
+#searchNumber {
+    width: 56px;
 }
 
 h1 {
@@ -320,6 +353,7 @@ footer {
 }
 
 .footerLink {
+    font-size: 16px;
     text-decoration: none;
     color: black;
     cursor: pointer;
