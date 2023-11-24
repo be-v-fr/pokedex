@@ -80,7 +80,7 @@ form {
 
 #searchInput:focus::placeholder {
     color: #faf9f9;
-    transition: 100ms;
+    transition: 125ms;
 }
 
 .searchPokeballImg {

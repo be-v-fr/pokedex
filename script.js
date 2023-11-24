@@ -31,7 +31,7 @@ async function init() {
 async function loadPokemon() {
     const pokedex = document.getElementById('pokedex');
     const url = 'https://pokeapi.co/api/v2/pokemon/';
-    pokedex.innerHTML = 'loading Pokémon data...';
+    pokedex.innerHTML = loadMessageHtml();
     for (let i = 1; i <= 150; i++) {
         let response = await fetch(url + i).catch(errorFunction);
         let responseAsJson = await response.json();
@@ -226,7 +226,7 @@ function showViewerSection(section) {
     const stats = document.getElementById('viewerStats');
     currentSection = section;
     setNavDisplay(section);
-    if(section == 'about') {
+    if (section == 'about') {
         stats.style.display = 'none';
         about.style.display = '';
     } else {
@@ -244,7 +244,7 @@ function setNavColor(section) {
     const about = document.getElementById('navAbout');
     const stats = document.getElementById('navStats');
     const typeColor = getTypeColor(currentPokemon);
-    if(section == 'about') {
+    if (section == 'about') {
         about.style.color = typeColor;
         about.style.borderColor = typeColor;
         stats.style.color = '';
@@ -271,7 +271,7 @@ function setNavCss(section) {
         about.classList.add('navLeft');
         stats.classList.add('navActive');
         stats.classList.remove('navInactive');
-        stats.classList.remove('navRight');      
+        stats.classList.remove('navRight');
     }
 }
 
@@ -307,6 +307,11 @@ function searchPokemon() {
 
 function resetSearch() {
     const input = document.getElementById('searchInput');
+    if (input.value != '') {
+        input.placeholder = 'Active filter: ' + input.value;
+    } else {
+        input.placeholder = 'Search Pokémon';
+    }
     input.value = '';
     showFilterNumber([], '');
 }
@@ -320,11 +325,11 @@ function filterPokemon() {
         data[1] = data[1].toLowerCase();
         data[3] = data[3].toLowerCase();
         data[4] = data[4].toLowerCase();
-        data.splice(2,1); // URL entfernen
+        data.splice(2, 1); // URL entfernen
 
-        for(let j = 1; j < data.length; j++) { // alle Items durchsuchen
+        for (let j = 1; j < data.length; j++) { // alle Items durchsuchen
             let datum = data[j];
-            if(datum.includes(search)) {
+            if (datum.includes(search)) {
                 pokemonFiltered.push(pokemon[i]); // Pokemon zur Auswahl hinzufügen
                 break; // verhindern, dass dasselbe Pokemon mehrfach hinzugefügt wird
             }
@@ -337,11 +342,17 @@ function filterPokemon() {
 function showFilterNumber(pokemonArray, search) {
     const number = pokemonArray.length;
     const numberContainer = document.getElementById('searchNumber');
-    if(search != '' && number < pokemon.length) {
+    if (search != '' && number < pokemon.length) {
         numberContainer.innerHTML = 'x ' + number;
     } else {
         numberContainer.innerHTML = '';
-    } 
+    }
+}
+
+function loadMessageHtml() {
+    return /* html */ `
+    <p style="font-size: 16px"><i>loading Pokémon data...</i></p>
+    `;
 }
 
 function cardHtml(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
