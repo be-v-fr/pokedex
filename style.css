@@ -153,7 +153,7 @@ button {
     padding: 3px;
     font-size: 16px;
     width: fit-content;
-    box-shadow: 1px 2px 0px rgba(255,255,255,0.4);
+    box-shadow: 1px 2px 0px rgba(255, 255, 255, 0.4);
 }
 
 .pokedexCardLeft {
@@ -202,6 +202,9 @@ button {
     border-radius: 50%;
     width: 60px;
     height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #iconBtnWrapper {
@@ -287,7 +290,7 @@ nav>button {
     bottom: -28px;
     left: 0;
     background-color: #333;
-  }
+}
 
 .navInactive:hover::before {
     transform: scaleX(1);
@@ -366,4 +369,23 @@ footer {
 
 .footerLink:hover {
     color: #606060;
+}
+
+@media(max-width: 573px) {
+    .pokedexCard {
+        width: 100%;
+    }
+
+    .pokedexCardRight {
+        justify-content: center;
+    }
+
+    .pokedexImg {
+        width: auto;
+        height: 120%;
+    }
+
+    .arrow {
+        margin: 0 calc(0.4 * 100vw - 231px);
+    }
 }

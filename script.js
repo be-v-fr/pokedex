@@ -169,7 +169,8 @@ function renderViewerAboutSection(pokemonIndex) {
 }
 
 function getPokeId(pokemonIndex) {
-    let id = '00' + pokemonIndex; // füge vor der Zahl zwei Nullen hinzu
+    let id = pokemonIndex + 1 // Indizierung anpassen
+    id = '00' + id; // füge vor der Zahl zwei Nullen hinzu
     id = id.slice(-3); // entferne alles vor den letzten drei Zeichen
     return '#' + id;
 }
@@ -321,22 +322,30 @@ function filterPokemon() {
     let pokemonFiltered = [];
     search = search.toLowerCase();
     for (let i = 0; i < pokemon.length; i++) {
-        let data = pokedexData(pokemon, i); // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
-        data[1] = data[1].toLowerCase();
-        data[3] = data[3].toLowerCase();
-        data[4] = data[4].toLowerCase();
-        data.splice(2, 1); // URL entfernen
-
-        for (let j = 1; j < data.length; j++) { // alle Items durchsuchen
-            let datum = data[j];
-            if (datum.includes(search)) {
-                pokemonFiltered.push(pokemon[i]); // Pokemon zur Auswahl hinzufügen
-                break; // verhindern, dass dasselbe Pokemon mehrfach hinzugefügt wird
-            }
-        }
+        filterOnePokemon(search, i, pokemonFiltered);
     }
     showFilterNumber(pokemonFiltered);
     return pokemonFiltered;
+}
+
+function filterOnePokemon(search, pokemonIndex, pokemonFiltered) {
+    let data = pokedexData(pokemon, pokemonIndex); // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
+    data = prepareDataForFilter(data);
+    for (let j = 1; j < data.length; j++) { // alle Items durchsuchen
+        let datum = data[j];
+        if (datum.includes(search)) {
+            pokemonFiltered.push(pokemon[pokemonIndex]); // Pokemon zur Auswahl hinzufügen
+            break; // verhindern, dass dasselbe Pokemon mehrfach hinzugefügt wird
+        }
+    }
+}
+
+function prepareDataForFilter(data) {
+    data[1] = data[1].toLowerCase();
+    data[3] = data[3].toLowerCase();
+    data[4] = data[4].toLowerCase();
+    data.splice(2, 1); // URL entfernen
+    return data;
 }
 
 function showFilterNumber(pokemonArray, search) {
@@ -356,13 +365,12 @@ function messageHtml(message) {
 }
 
 function cardHtml(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
-    const type0Html = typeHtml(data[3]);
     return /* html */ `
         <div class="pokedexCard" id="pokedexCard${data[0]}" onclick="view(${data[0]})">
             <img class="pokeballBg" src="./img/pokeball.svg">
             <div class="pokedexCardLeft" id="pokedexCardLeft${data[0]}">
                 <h1>${data[1]}</h1>
-                ${type0Html}
+                ${typeHtml(data[3])}
             </div>
             <div class="pokedexCardRight">
                 <img class="pokedexImg" src="${data[2]}">
