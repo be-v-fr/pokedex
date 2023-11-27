@@ -1,23 +1,23 @@
 const TYPE_COLORS = {
-    bug: '#3A9A54',
-    dark: '#5C5879',
-    dragon: '#448994',
-    electric: '#FCF872',
-    fairy: '#E71469',
-    fighting: '#ED6237',
-    fire: '#FF4A5A',
-    flying: '#93B2C7',
-    ghost: '#8E6890',
-    grass: '#26CB4C',
-    ground: '#A96F2F',
-    ice: '#D8F0FA',
-    normal: '#CB97A7',
-    poison: '#9D68D9',
-    psychic: '#F41E90',
-    rock: '#893E23',
-    steel: '#42BD94',
-    water: '#85A9FE'
-};
+    'normal': ['#A8A77A', '#8C844D'],
+    'fire': ['#EE8130', '#C76E24'],
+    'water': ['#6390F0', '#4D76D9'],
+    'electric': ['#F7D02C', '#D4B526'],
+    'grass': ['#7AC74C', '#628C42'],
+    'ice': ['#96D9D6', '#7DBCB9'],
+    'fighting': ['#E5756D', '#D53F3A'],
+    'poison': ['#A33EA1', '#853578'],
+    'ground': ['#E2BF65', '#C0A453'],
+    'flying': ['#A98FF3', '#8D74C7'],
+    'psychic': ['#F95587', '#D43E6B'],
+    'bug': ['#A6B91A', '#849016'],
+    'rock': ['#B6A136', '#947F2D'],
+    'ghost': ['#735797', '#5C4773'],
+    'dragon': ['#6F35FC', '#5A2CC2'],
+    'dark': ['#705746', '#584537'],
+    'steel': ['#B7B7CE', '#9A9AAB'],
+    'fairy': ['#D685AD', '#B86A8A']
+  };  
 
 let pokemon = [];
 let currentPokemon = 0;
@@ -31,7 +31,7 @@ async function init() {
 async function loadPokemon() {
     const pokedex = document.getElementById('pokedex');
     const url = 'https://pokeapi.co/api/v2/pokemon/';
-    pokedex.innerHTML = loadMessageHtml();
+    pokedex.innerHTML = messageHtml('loading Pokémon data');
     for (let i = 1; i <= 150; i++) {
         let response = await fetch(url + i).catch(errorFunction);
         let responseAsJson = await response.json();
@@ -90,13 +90,13 @@ function pokedexData(pokemonArray, pokemonIndex) {
 
 function setPokedexBgColor(pokeId) {
     const card = document.getElementById(`pokedexCard${pokeId}`);
-    card.style.backgroundColor = getTypeColor(pokeId - 1);
+    card.style.backgroundColor = getTypeColor(pokeId - 1, 0);
 }
 
-function getTypeColor(pokemonIndex) {
+function getTypeColor(pokemonIndex, arrayIndex) {
     let type = pokedexData(pokemon, pokemonIndex)[3];
     type = type.toLowerCase(); // klein schreiben, da Parameter in Großschreibweise übergeben wurde
-    return TYPE_COLORS[`${type}`];
+    return TYPE_COLORS[`${type}`][arrayIndex];
 }
 
 function view(pokemonIndex) {
@@ -119,7 +119,7 @@ function toggleViewer(event) {
 }
 
 function renderPokemonToViewer(pokemonIndex) {
-    const typeColor = getTypeColor(pokemonIndex);
+    const typeColor = getTypeColor(pokemonIndex, 0);
     renderViewerBasic(pokemonIndex);
     renderViewerAboutSection(pokemonIndex);
     renderViewerStatsSection(pokemonIndex);
@@ -243,7 +243,7 @@ function setNavDisplay(section) {
 function setNavColor(section) {
     const about = document.getElementById('navAbout');
     const stats = document.getElementById('navStats');
-    const typeColor = getTypeColor(currentPokemon);
+    const typeColor = getTypeColor(currentPokemon, 0);
     if (section == 'about') {
         about.style.color = typeColor;
         about.style.borderColor = typeColor;
@@ -349,19 +349,20 @@ function showFilterNumber(pokemonArray, search) {
     }
 }
 
-function loadMessageHtml() {
+function messageHtml(message) {
     return /* html */ `
-    <p style="font-size: 16px"><i>loading Pokémon data...</i></p>
+    <p style="font-size: 16px"><i>${message}...</i></p>
     `;
 }
 
 function cardHtml(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
+    const type0Html = typeHtml(data[3]);
     return /* html */ `
         <div class="pokedexCard" id="pokedexCard${data[0]}" onclick="view(${data[0]})">
             <img class="pokeballBg" src="./img/pokeball.svg">
             <div class="pokedexCardLeft" id="pokedexCardLeft${data[0]}">
                 <h1>${data[1]}</h1>
-                <span class="pokedexType">${data[3]}</span>
+                ${type0Html}
             </div>
             <div class="pokedexCardRight">
                 <img class="pokedexImg" src="${data[2]}">
@@ -371,8 +372,14 @@ function cardHtml(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
 }
 
 function typeHtml(type) {
+    const color = TYPE_COLORS[type.toLowerCase()][1];
     return /* html */ `
-        <span class="pokedexType">${type}</span>
+        <span
+            class="pokedexType"
+            style="background: ${color}"
+        >
+            ${type}
+        </span>
     `;
 }
 
