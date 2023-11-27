@@ -149,11 +149,11 @@ button {
 }
 
 .pokedexType {
-    background: rgba(0, 0, 0, 0.1);
     border-radius: var(--border-radius-s);
     padding: 3px;
     font-size: 16px;
     width: fit-content;
+    box-shadow: 1px 2px 0px rgba(255,255,255,0.4);
 }
 
 .pokedexCardLeft {
@@ -230,6 +230,11 @@ button {
 
 #viewerName {
     margin-bottom: 10px;
+}
+
+#viewerTypes {
+    display: flex;
+    gap: 6px;
 }
 
 #viewerBottom {
