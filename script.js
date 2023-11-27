@@ -63,11 +63,15 @@ function renderPokedex(pokemonArray) { // rendern je nach Array, auch bei Suchfi
         pokedex.innerHTML += cardHtml(data);
         setPokedexBgColor(pokeId);
         if (type1) {
-            const containerId = `pokedexCardLeft${pokeId}`;
-            const container = document.getElementById(containerId);
-            container.innerHTML += typeHtml(type1);
+            renderType1(pokeId, type1);
         }
     }
+}
+
+function renderType1(pokeId, type1) {
+    const containerId = `pokedexCardLeft${pokeId}`;
+    const container = document.getElementById(containerId);
+    container.innerHTML += typeHtml(type1);
 }
 
 function pokedexData(pokemonArray, pokemonIndex) {
@@ -76,16 +80,19 @@ function pokedexData(pokemonArray, pokemonIndex) {
     let name = pokemonJson['name'];
     let imgUrl = pokemonJson['sprites']['other']['official-artwork']['front_default'];
     let type0 = pokemonJson['types']['0']['type']['name'];
-    let type1 = '';
-
+    let type1 =  getType1(pokemonJson);
     name = capitalizeFirstLetter(name);
     type0 = capitalizeFirstLetter(type0);
+    return [pokeId, name, imgUrl, type0, type1];
+}
+
+function getType1(pokemonJson) {
+    let type1 = '';
     if (pokemonJson['types']['1']) {
         type1 = pokemonJson['types']['1']['type']['name'];
         type1 = capitalizeFirstLetter(type1);
     }
-
-    return [pokeId, name, imgUrl, type0, type1];
+    return type1;
 }
 
 function setPokedexBgColor(pokeId) {
@@ -260,19 +267,24 @@ function setNavCss(section) {
     const about = document.getElementById('navAbout');
     const stats = document.getElementById('navStats');
     if (section == 'about') {
-        about.classList.add('navActive');
-        about.classList.remove('navInactive');
-        about.classList.remove('navLeft');
-        stats.classList.remove('navActive');
-        stats.classList.add('navInactive');
-        stats.classList.add('navRight');
+        navActivate(about, true, 'left');
+        navActivate(stats, false, 'right');
     } else {
-        about.classList.remove('navActive');
-        about.classList.add('navInactive');
-        about.classList.add('navLeft');
-        stats.classList.add('navActive');
-        stats.classList.remove('navInactive');
-        stats.classList.remove('navRight');
+        navActivate(about, false, 'left');
+        navActivate(stats, true, 'right');
+    }
+}
+
+function navActivate(section, activate, side) {
+    side = capitalizeFirstLetter(side);
+    if(activate == true) {
+        section.classList.add('navActive');
+        section.classList.remove('navInactive');
+        section.classList.remove(`nav${side}`)
+    } else {
+        section.classList.remove('navActive');
+        section.classList.add('navInactive');
+        section.classList.add(`nav${side}`)
     }
 }
 
