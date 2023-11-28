@@ -42,12 +42,23 @@ body.no-scroll {
 
 header {
     background: white;
-    padding: var(--pokedex-padding) 0;
+    padding: var(--pokedex-padding);
+    padding-right: calc(var(--pokedex-padding) + var(--scrollbar-width));
     margin-bottom: calc(var(--pokedex-padding) / 2);
     box-shadow: var(--shadowing-l);
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+}
+
+.headerSideContainer {
+    flex: 1;
+}
+
+#messageContainer {
+    font-style: italic;
+    font-size: 16px;
+    margin: 0;
 }
 
 form {

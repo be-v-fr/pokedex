@@ -17,28 +17,33 @@ const TYPE_COLORS = {
     'dark': ['#705746', '#584537'],
     'steel': ['#B7B7CE', '#9A9AAB'],
     'fairy': ['#D685AD', '#B86A8A']
-  };  
+  };
+
+const LOAD_NR = 50;
 
 let pokemon = [];
 let currentPokemon = 0;
 let currentSection = 'about';
 
+
 async function init() {
     await loadPokemon();
     renderPokedex(pokemon);
+    toggleLoadMoreBtn();
 }
 
 async function loadPokemon() {
-    const pokedex = document.getElementById('pokedex');
+    const messageContainer = document.getElementById('messageContainer');
     const url = 'https://pokeapi.co/api/v2/pokemon/';
-    pokedex.innerHTML = messageHtml('loading Pokémon data');
-    for (let i = 1; i <= 150; i++) {
-        let response = await fetch(url + i).catch(errorFunction);
+    const countFrom = pokemon.length;
+    for (let i = 1; i <= LOAD_NR; i++) {
+        const pokeId = countFrom + i;
+        messageContainer.innerHTML = loadingMessageHtml(pokeId, countFrom);
+        let response = await fetch(url + pokeId).catch(errorFunction);
         let responseAsJson = await response.json();
-
         pokemon.push(responseAsJson);
+        messageContainer.innerHTML = '';
     }
-    pokedex.innerHTML = '';
 }
 
 function errorFunction() {
@@ -55,17 +60,28 @@ function removeHyphens(string) {
 
 function renderPokedex(pokemonArray) { // rendern je nach Array, auch bei Suchfilter
     const pokedex = document.getElementById('pokedex');
+    const messageContainer = document.getElementById('messageContainer');
+    const length = pokemonArray.length;
     pokedex.innerHTML = '';
-    for (let i = 0; i < pokemonArray.length; i++) {
-        const pokeId = pokedexData(pokemonArray, i)[0]; // offizielle ID des Pokemon, Zählung startet bei 1
-        const data = pokedexData(pokemon, pokeId - 1); // erzeuge zugehörige Daten aus vollständigem Array, PokeId um 1 verringern
-        const type1 = data[4];
-        pokedex.innerHTML += cardHtml(data);
-        setPokedexBgColor(pokeId);
-        if (type1) {
-            renderType1(pokeId, type1);
-        }
+    for (let i = 0; i < length; i++) {
+        addToPokedex(pokemonArray, i, length);
     }
+    messageContainer.innerHTML = '';
+}
+
+function addToPokedex(pokemonArray, index, length) {
+    const pokedex = document.getElementById('pokedex');
+    const messageContainer = document.getElementById('messageContainer');
+    const pokeId = pokedexData(pokemonArray, index)[0]; // offizielle ID des Pokemon, Zählung startet bei 1
+    const data = pokedexData(pokemon, pokeId - 1); // erzeuge zugehörige Daten aus vollständigem Array, PokeId um 1 verringern
+    const type1 = data[4];
+    messageContainer.innerHTML = messageHtml('rendering', index + 1, length);
+    pokedex.innerHTML += cardHtml(data);
+    setPokedexBgColor(pokeId);
+    if (type1) {
+        renderType1(pokeId, type1);
+    }
+    messageContainer.innerHTML = '';
 }
 
 function renderType1(pokeId, type1) {
@@ -104,6 +120,26 @@ function getTypeColor(pokemonIndex, arrayIndex) {
     let type = pokedexData(pokemon, pokemonIndex)[3];
     type = type.toLowerCase(); // klein schreiben, da Parameter in Großschreibweise übergeben wurde
     return TYPE_COLORS[`${type}`][arrayIndex];
+}
+
+function toggleLoadMoreBtn() {
+    const btn = document.getElementById('loadMoreBtn');
+    if(btn.style.display == 'none') {
+        btn.style.display = 'initial';
+    } else {
+        btn.style.display = 'none';
+    }  
+}
+
+async function loadMorePokemon() {
+    const startingId = pokemon.length;
+    toggleLoadMoreBtn();
+    await loadPokemon();
+    for (let i = 0; i < LOAD_NR; i++) {
+        const arrayIndex = startingId + i;
+        addToPokedex(pokemon, arrayIndex, LOAD_NR);
+    }
+    toggleLoadMoreBtn();
 }
 
 function view(pokemonIndex) {

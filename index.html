@@ -15,13 +15,18 @@
 
 <body onload="init()">
     <header>
-        <form onsubmit="searchPokemon(); return false" action="">
+        <div class="headerSideContainer">
+            <p id="messageContainer"></p>
+            <button id="loadMoreBtn" onclick="loadMorePokemon()" style="display: none">load more</button>
+        </div>
+        <form onsubmit="searchPokemon(); return false" action="">     
             <input type="text" id="searchInput" placeholder="Search Pokémon" onkeyup="filterPokemon()">
             <button type="submit" class="searchPokeballBtn">
                 <img class="searchPokeballImg" src="./img/pokeball_icon.png">
             </button>
             <p id="searchNumber"></p>
         </form>
+        <div class="headerSideContainer"></div>
     </header>
 
     <div id="pokedex"></div>

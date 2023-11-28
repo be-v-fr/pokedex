@@ -1,6 +1,14 @@
-function messageHtml(message) {
+function loadingMessageHtml(pokeId, countFrom) {
+    const current = getPokeId(pokeId - 1);
+    const end = getPokeId(countFrom + LOAD_NR - 1);
+    return messageHtml('loading', current, end);
+}
+
+function messageHtml(message, current, end) {
     return /* html */ `
-    <p style="font-size: 16px"><i>${message}...</i></p>
+        ${message}        
+        ${current} / ${end}
+        ...
     `;
 }
 
