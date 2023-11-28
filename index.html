@@ -8,6 +8,8 @@
     <link rel="icon" type="image/x-icon" href="./img/pokeball_icon.png" />
     <link rel="stylesheet" href="./fonts.css">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./viewer.css">
+    <link rel="stylesheet" href="./responsive.css">
 
     <script src="./const.js"></script>
     <script src="./script.js"></script>
@@ -15,12 +17,13 @@
 </head>
 
 <body onload="init()">
+
     <header>
         <div class="headerSideContainer">
             <p id="messageContainer"></p>
             <button id="loadMoreBtn" onclick="loadMorePokemon()" style="display: none">load more</button>
         </div>
-        <form onsubmit="searchPokemon(); return false" action="">     
+        <form onsubmit="searchPokemon(); return false" action="">
             <input type="text" id="searchInput" placeholder="Search Pokémon" onkeyup="filterPokemon()">
             <button type="submit" class="searchPokeballBtn">
                 <img class="searchPokeballImg" src="./img/pokeball_icon.png">
@@ -29,6 +32,7 @@
         </form>
         <div class="headerSideContainer"></div>
     </header>
+
 
     <div id="pokedex"></div>
 

@@ -28,10 +28,13 @@
 
 body {
     margin: 0;
+    min-height: 100vh;
     background: var(--pokedex-bg);
     font-family: 'Open Sans';
     font-size: 18px;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
     margin-right: calc(100% - 100vw);
     /* Unabhängigkeit vom Scrollbalken */
 }
@@ -50,6 +53,9 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 .headerSideContainer {
@@ -214,184 +220,10 @@ button {
     filter: drop-shadow(var(--shadowing-s));
 }
 
-.overlay {
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    gap: 16px;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-}
-
-.iconBtn {
-    filter: drop-shadow(var(--shadowing-s));
-    transition: 125ms ease-in-out;
-}
-
-.iconBtn:hover {
-    transform: scale(1.2);
-    transition: 75ms ease-in-out;
-}
-
-.arrow {
-    background: white;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#iconBtnWrapper {
-    display: flex;
-    justify-content: flex-end;
-}
-
-#pokemonViewer {
-    min-height: 50vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    color: white;
-    width: var(--viewer-width);
-    height: 650px;
-    background: none;
-    border-radius: var(--border-radius-l);
-    box-shadow: var(--shadowing-l);
-}
-
-#viewerTop {
-    border-radius: var(--border-radius-l);
-    flex: 1;
-    padding: var(--pokedex-padding);
-}
-
-#viewerName {
-    margin-bottom: 10px;
-}
-
-#viewerTypes {
-    display: flex;
-    gap: 6px;
-}
-
-#viewerBottom {
-    background: white;
-    border-radius: var(--border-radius-l);
-    height: 50%;
-    margin-top: -20px;
-    padding: var(--pokedex-padding);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#viewerPokemonImg {
-    max-width: 100%;
-    max-height: 220px;
-    margin-top: -200px;
-    margin-bottom: 8px;
-    filter: drop-shadow(var(--shadowing-s));
-}
-
-nav {
-    padding-top: var(--pokedex-padding);
-    display: flex;
-    justify-content: center;
-    gap: calc(var(--pokedex-padding) * 2);
-}
-
-nav>button {
-    font-size: 18px;
-    color: #000;
-    text-decoration: none;
-    padding: 0;
-}
-
-.navActive {
-    border-bottom: 3px solid #222;
-}
-
-.navInactive {
-    padding-bottom: 7px;
-}
-
-.navInactive::before {
-    content: "";
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 3px;
-    bottom: -31px;
-    left: 0;
-    background-color: #333;
-}
-
-.navInactive:hover::before {
-    transform: scaleX(1);
-}
-
-.navLeft::before {
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    transition: transform 125ms ease-in-out;
-}
-
-.navRight::before {
-    transform: scaleX(0);
-    transform-origin: bottom left;
-    transition: transform 125ms ease-in-out;
-}
-
-section {
-    width: var(--viewer-width);
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.viewerTable {
-    width: 100%;
-    padding-bottom: var(--pokedex-padding);
-}
-
-.viewerTable>tbody>tr>td {
-    width: 50%;
-    padding-bottom: 2px;
-}
-
-.tableLeft {
-    font-weight: bold;
-    text-align: right;
-    padding-right: var(--pokedex-padding);
-}
-
-.tableRight {
-    color: black;
-    padding-left: var(--pokedex-padding);
-}
-
-#pokeId {
-    color: #888888;
-}
-
-.tdAbilities {
-    vertical-align: top;
-}
-
-#abilities {
-    list-style-type: none;
-    padding: 0;
-    display: contents;
-}
-
 footer {
+    flex: 1;
     display: flex;
+    align-items: flex-end;
     justify-content: flex-end;
     gap: 4px;
     padding-top: var(--pokedex-padding);
@@ -408,23 +240,4 @@ footer {
 
 .footerLink:hover {
     color: #606060;
-}
-
-@media(max-width: 573px) {
-    .pokedexCard {
-        width: 100%;
-    }
-
-    .pokedexCardRight {
-        justify-content: center;
-    }
-
-    .pokedexImg {
-        width: auto;
-        height: 120%;
-    }
-
-    .arrow {
-        margin: 0 calc(0.4 * 100vw - 231px);
-    }
 }

@@ -2,7 +2,6 @@ let pokemon = [];
 let currentPokemon = 0;
 let currentSection = 'about';
 
-
 async function init() {
     await loadPokemon();
     renderPokedex(pokemon);

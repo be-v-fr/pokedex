@@ -1,0 +1,24 @@
+@media(max-width: 573px) {
+    .pokedexCard {
+        width: 100%;
+    }
+
+    .pokedexCardRight {
+        justify-content: center;
+    }
+
+    .pokedexImg {
+        width: auto;
+        height: 120%;
+    }
+
+    .arrow {
+        margin: 0 calc(0.4 * 100vw - 231px);
+    }
+}
+
+@media(max-height: 650px) {
+    #pokemonViewer {
+        height: 100vh;
+    } 
+}
