@@ -1,5 +1,6 @@
 :root {
     --pokedex-padding: 12px;
+    --pokedex-bg: #f0ebe7;
     --border-radius-l: 12px;
     --border-radius-s: 8px;
     --shadowing-l: 2px 2px 4px rgba(0, 0, 0, 0.25);
@@ -13,7 +14,7 @@
 }
 
 ::-webkit-scrollbar-track {
-    background: #f0ebe7;
+    background: var(--pokedex-bg);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -27,7 +28,7 @@
 
 body {
     margin: 0;
-    background: #f0ebe7;
+    background: var(--pokedex-bg);
     font-family: 'Open Sans';
     font-size: 18px;
     overflow-x: hidden;
@@ -59,6 +60,31 @@ header {
     font-style: italic;
     font-size: 16px;
     margin: 0;
+}
+
+#loadMoreBtn {
+    border-radius: var(--border-radius-l);
+    border: 1px solid #333;
+    background: #faf9f9;
+    color: #333;
+    height: 28px;
+    font-size: 16px;
+    outline: none;
+    padding: 0 6px;
+    cursor: pointer;
+    transition: 75ms;
+}
+
+#loadMoreBtn:hover {
+    border-color: #636363;
+    background: #fcfafa;
+    transition: 75ms;
+}
+
+#loadMoreBtn:active {
+    border-radius: var(--border-radius-s);
+    border-color: #888888;
+    background: #fefcfc;
 }
 
 form {
