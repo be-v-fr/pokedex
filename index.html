@@ -13,30 +13,36 @@
 
     <script src="./const.js"></script>
     <script src="./script.js"></script>
+    <script src="./search.js"></script>
     <script src="./templates.js"></script>
 </head>
 
 <body onload="init()">
 
-    <header>
-        <div class="headerSideContainer">
-            <p id="messageContainer"></p>
-            <button id="loadMoreBtn" onclick="loadMorePokemon()" style="display: none">load more</button>
-        </div>
-        <form onsubmit="searchPokemon(); return false" action="">
-            <input type="text" id="searchInput" placeholder="Search Pokémon" onkeyup="filterPokemon()">
-            <button type="submit" class="searchPokeballBtn">
-                <img class="searchPokeballImg" src="./img/pokeball_icon.png">
-            </button>
-            <p id="searchNumber"></p>
-        </form>
-        <div class="headerSideContainer"></div>
-    </header>
+    <div class="headerWrapper">
+        <header>
+            <div class="headerSideContainer">
+                <button id="loadMoreBtn" onclick="loadMorePokemon()">load more</button>
+            </div>
+            <form onsubmit="searchPokemon(); return false" action="">
+                <input type="text" id="searchInput" placeholder="Search Pokémon" onkeyup="filterPokemon()">
+                <button type="submit" class="searchPokeballBtn">
+                    <img class="searchPokeballImg" src="./img/pokeball_icon.png">
+                </button>
+                <p id="searchNumber"></p>
+            </form>
+            <div class="headerSideContainer" id="headerSideContainerRight"></div>
+        </header>
+    </div>
 
 
     <div id="pokedex"></div>
 
-    <div class="overlay" id="overlay" onclick="toggleViewer(event)" style="display: none">
+    <div class="overlay" id="messageOverlay" style="display: none">
+        <p id="messageContainer"></p>
+    </div>
+
+    <div class="overlay" id="viewerOverlay" onclick="toggleViewer(event)" style="display: none">
         <button class="iconBtn arrow" onclick="event.stopPropagation(); nextPokemon(false);">
             <svg id="arrowLeft" viewBox="0 0 21 48" width="20" height="48" fill="white" stroke-width="6"
                 stroke-linecap="round" stroke-linejoin="round">
@@ -99,13 +105,16 @@
         </button>
     </div>
 
-    <footer>
-        <a href="http://bengt-fruechtenicht.developerakademie.net/impressum.html" class="footerLink">Impressum</a>
-        |
-        <a href="http://bengt-fruechtenicht.developerakademie.net/datenschutz.html" class="footerLink">Datenschutz</a>
-        |
-        <a href="./credits.html" class="footerLink">Credits</a>
-    </footer>
+    <div class="footerWrapper">
+        <footer>
+            <a href="http://bengt-fruechtenicht.developerakademie.net/impressum.html" class="footerLink">Impressum</a>
+            |
+            <a href="http://bengt-fruechtenicht.developerakademie.net/datenschutz.html"
+                class="footerLink">Datenschutz</a>
+            |
+            <a href="./credits.html" class="footerLink">Credits</a>
+        </footer>
+    </div>
 </body>
 
 </html>

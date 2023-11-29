@@ -1,16 +1,3 @@
-.overlay {
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    z-index: 10;
-    gap: 16px;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-}
-
 .iconBtn {
     filter: drop-shadow(var(--shadowing-s));
     transition: 125ms ease-in-out;

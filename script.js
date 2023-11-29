@@ -5,20 +5,29 @@ let currentSection = 'about';
 async function init() {
     await loadPokemon();
     renderPokedex(pokemon);
-    toggleLoadMoreBtn();
 }
 
 async function loadPokemon() {
-    const messageContainer = document.getElementById('messageContainer');
     const url = 'https://pokeapi.co/api/v2/pokemon/';
     const countFrom = pokemon.length;
+    toggleMessageOverlay();
     for (let i = 1; i <= LOAD_NR; i++) {
         const pokeId = countFrom + i;
         messageContainer.innerHTML = loadingMessageHtml(pokeId, countFrom);
         let response = await fetch(url + pokeId).catch(errorFunction);
         let responseAsJson = await response.json();
         pokemon.push(responseAsJson);
-        messageContainer.innerHTML = '';
+    }
+    messageContainer.innerHTML = '';
+    toggleMessageOverlay();
+}
+
+function toggleMessageOverlay() {
+    const overlay = document.getElementById('messageOverlay');
+    if(overlay.style.display == 'none') {
+        overlay.style.display = 'flex'; 
+    } else {
+        overlay.style.display = 'none';
     }
 }
 
@@ -39,10 +48,12 @@ function renderPokedex(pokemonArray) { // rendern je nach Array, auch bei Suchfi
     const messageContainer = document.getElementById('messageContainer');
     const length = pokemonArray.length;
     pokedex.innerHTML = '';
+    toggleMessageOverlay();
     for (let i = 0; i < length; i++) {
         addToPokedex(pokemonArray, i, length);
     }
     messageContainer.innerHTML = '';
+    toggleMessageOverlay();
 }
 
 function addToPokedex(pokemonArray, index, length) {
@@ -98,24 +109,13 @@ function getTypeColor(pokemonIndex, arrayIndex) {
     return TYPE_COLORS[`${type}`][arrayIndex];
 }
 
-function toggleLoadMoreBtn() {
-    const btn = document.getElementById('loadMoreBtn');
-    if(btn.style.display == 'none') {
-        btn.style.display = 'initial';
-    } else {
-        btn.style.display = 'none';
-    }  
-}
-
 async function loadMorePokemon() {
     const startingId = pokemon.length;
-    toggleLoadMoreBtn();
     await loadPokemon();
     for (let i = 0; i < LOAD_NR; i++) {
         const arrayIndex = startingId + i;
         addToPokedex(pokemon, arrayIndex, LOAD_NR);
     }
-    toggleLoadMoreBtn();
 }
 
 function view(pokemonIndex) {
@@ -126,7 +126,7 @@ function view(pokemonIndex) {
 
 function toggleViewer(event) {
     const body = document.body;
-    const overlay = document.getElementById('overlay');
+    const overlay = document.getElementById('viewerOverlay');
     overlay.style.display = (overlay.style.display === 'none') ? 'flex' : 'none';
 
     // Wenn ein Event übergeben wurde und es nicht im Pop-Up war, schließe das Pop-Up
@@ -322,62 +322,5 @@ function decrementCurrent() {
         currentPokemon--;
     } else {
         currentPokemon = pokemon.length - 1;
-    }
-}
-
-function searchPokemon() {
-    renderPokedex(filterPokemon());
-    resetSearch();
-}
-
-function resetSearch() {
-    const input = document.getElementById('searchInput');
-    if (input.value != '') {
-        input.placeholder = 'Active filter: ' + input.value;
-    } else {
-        input.placeholder = 'Search Pokémon';
-    }
-    input.value = '';
-    showFilterNumber([], '');
-}
-
-function filterPokemon() {
-    let search = document.getElementById('searchInput').value;
-    let pokemonFiltered = [];
-    search = search.toLowerCase();
-    for (let i = 0; i < pokemon.length; i++) {
-        filterOnePokemon(search, i, pokemonFiltered);
-    }
-    showFilterNumber(pokemonFiltered);
-    return pokemonFiltered;
-}
-
-function filterOnePokemon(search, pokemonIndex, pokemonFiltered) {
-    let data = pokedexData(pokemon, pokemonIndex); // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
-    data = prepareDataForFilter(data);
-    for (let j = 1; j < data.length; j++) { // alle Items durchsuchen
-        let datum = data[j];
-        if (datum.includes(search)) {
-            pokemonFiltered.push(pokemon[pokemonIndex]); // Pokemon zur Auswahl hinzufügen
-            break; // verhindern, dass dasselbe Pokemon mehrfach hinzugefügt wird
-        }
-    }
-}
-
-function prepareDataForFilter(data) {
-    data[1] = data[1].toLowerCase();
-    data[3] = data[3].toLowerCase();
-    data[4] = data[4].toLowerCase();
-    data.splice(2, 1); // URL entfernen
-    return data;
-}
-
-function showFilterNumber(pokemonArray, search) {
-    const number = pokemonArray.length;
-    const numberContainer = document.getElementById('searchNumber');
-    if (search != '' && number < pokemon.length) {
-        numberContainer.innerHTML = 'x ' + number;
-    } else {
-        numberContainer.innerHTML = '';
     }
 }

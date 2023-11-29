@@ -1,4 +1,8 @@
 @media(max-width: 573px) {
+    #headerSideContainerRight {
+        display: none;
+    }
+
     .pokedexCard {
         width: 100%;
     }
@@ -17,8 +21,44 @@
     }
 }
 
+@media(max-width: 420px) {
+    :root {
+        --pokedex-padding: 8px;
+    }
+
+    #loadMoreBtn {
+        font-size: 14px;
+    }
+
+    #searchInput {
+        width: 156px;
+    }
+
+    .searchPokeballBtn {
+        padding-right: 0;
+    }
+
+    #searchNumber {
+        display: none;
+    }
+
+    .pokedexCard {
+        width: calc(100vw - 4 * var(--pokedex-padding) - var(--scrollbar-width));
+    }
+
+    .pokedexImg {
+        height: 110%;
+    }
+}
+
+@media(max-width: 350px) {
+    :root {
+        --viewer-width: 100vw;
+    }
+}
+
 @media(max-height: 650px) {
     #pokemonViewer {
         height: 100vh;
-    } 
+    }
 }
