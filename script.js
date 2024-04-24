@@ -1,74 +1,139 @@
 let pokemon = [];
+let renderedPokemon = 0;
 let currentPokemon = 0;
 let currentSection = 'about';
 
-async function init() {
-    await loadPokemon();
-    renderPokedex(pokemon);
+
+/**
+ * initialize web page (called by body onload event)
+ */
+function init() {
+    loadAndRenderPokemon();
 }
 
+
+function loadAndRenderPokemon() {
+    const goalNr = pokemon.length + LOAD_NR;
+    loadPokemon();
+    renderPokedexWhileLoading(pokemon.length + LOAD_NR);
+}
+
+
+/**
+ * download next set of pokemon from API
+ * (number of pokemon per set given by global const "LOAD_NR")
+ */
 async function loadPokemon() {
     const url = 'https://pokeapi.co/api/v2/pokemon/';
     const countFrom = pokemon.length;
-    toggleMessageOverlay();
     for (let i = 1; i <= LOAD_NR; i++) {
         const pokeId = countFrom + i;
-        messageContainer.innerHTML = loadingMessageHtml(pokeId, countFrom);
+        setMessage(getLoadingMessageHtml(pokeId, countFrom));
         let response = await fetch(url + pokeId).catch(errorFunction);
         let responseAsJson = await response.json();
         pokemon.push(responseAsJson);
     }
-    messageContainer.innerHTML = '';
-    toggleMessageOverlay();
 }
 
+
+/**
+ * set message to be shown in message container
+ * @param {String} messageHtml - message HTML string 
+ */
+function setMessage(messageHtml) {
+    const messageContainer = document.getElementById('messageContainer');
+    messageContainer.innerHTML = messageHtml;
+}
+
+
+/**
+ * toggle loading/rendering message overlay
+ */
 function toggleMessageOverlay() {
     const overlay = document.getElementById('messageOverlay');
-    if(overlay.style.display == 'none') {
-        overlay.style.display = 'flex'; 
-    } else {
-        overlay.style.display = 'none';
-    }
+    overlay.style.display == 'none' ? overlay.style.display = 'flex' : overlay.style.display = 'none';
 }
 
+
+/**
+ * display general error in console
+ */
 function errorFunction() {
-    console.log('Fehler');
+    console.error('Error!');
 }
 
+
+/**
+ * capitalize first letter of any string
+ * @param {String} string - input string 
+ * @returns {String} transformed string
+ */
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+
+/**
+ * replace hyphens with spaces in any string
+ * @param {String} string - input string 
+ * @returns transformed string
+ */
 function removeHyphens(string) {
     return string.replace(/-/g, ' ');
 }
 
-function renderPokedex(pokemonArray) { // rendern je nach Array, auch bei Suchfilter
-    const pokedex = document.getElementById('pokedex');
-    const messageContainer = document.getElementById('messageContainer');
-    const length = pokemonArray.length;
-    pokedex.innerHTML = '';
+
+/**
+ * render pokedex
+ * @param {Array} pokemonArray - array of pokemon to be rendered (all loaded pokemon or filtered pokemon)
+ * @param {Number} goalNr - pokemon number after loading process completion
+ */
+function renderPokedexWhileLoading(goalNr) {
     toggleMessageOverlay();
-    for (let i = 0; i < length; i++) {
-        addToPokedex(pokemonArray, i, length);
-    }
-    messageContainer.innerHTML = '';
-    toggleMessageOverlay();
+    const interval = setInterval(() => {
+        updatePokedex();
+        window.scrollTo(0, document.body.scrollHeight);
+        console.log('render while loading!')
+        if(pokemon.length == goalNr) {
+            toggleMessageOverlay();
+            clearInterval(interval);
+        }
+    }, 1000);
 }
 
-function addToPokedex(pokemonArray, index, length) {
+
+/**
+ * render pokedex
+ * @param {Array} pokemonArray - array of pokemon to be rendered (all loaded pokemon or filtered pokemon)
+ */
+function renderPokedex(pokemonArray) {
     const pokedex = document.getElementById('pokedex');
-    const messageContainer = document.getElementById('messageContainer');
-    const pokeId = pokedexData(pokemonArray, index)[0]; // offizielle ID des Pokemon, Zählung startet bei 1
-    const data = pokedexData(pokemon, pokeId - 1); // erzeuge zugehörige Daten aus vollständigem Array, PokeId um 1 verringern
+    pokedex.innerHTML = '';
+    for (let i = 0; i < pokemonArray.length; i++) {addToPokedex(pokemonArray, i)}
+}
+
+
+function updatePokedex() {
+    const startingLength = document.getElementsByClassName('pokedexCard').length;
+    for (let i = startingLength; i < pokemon.length; i++) {
+        addToPokedex(pokemon, i);
+    }
+}
+
+
+/**
+ * render single pokemon to pokedex
+ * @param {Array} pokemonArray - array containing the pokemon to be added
+ * @param {Number} index - pokemon array index 
+ */
+function addToPokedex(pokemonArray, index) {
+    const pokedex = document.getElementById('pokedex');
+    const pokeId = pokedexData(pokemonArray, index)[0];
+    const data = pokedexData(pokemon, pokeId - 1);
     const type1 = data[4];
-    messageContainer.innerHTML = messageHtml('rendering', index + 1, length);
     pokedex.innerHTML += cardHtml(data);
     setPokedexBgColor(pokeId);
-    if (type1) {
-        renderType1(pokeId, type1);
-    }
-    messageContainer.innerHTML = '';
+    if (type1) {renderType1(pokeId, type1)}
 }
 
 function renderType1(pokeId, type1) {
@@ -109,13 +174,8 @@ function getTypeColor(pokemonIndex, arrayIndex) {
     return TYPE_COLORS[`${type}`][arrayIndex];
 }
 
-async function loadMorePokemon() {
-    const startingId = pokemon.length;
-    await loadPokemon();
-    for (let i = 0; i < LOAD_NR; i++) {
-        const arrayIndex = startingId + i;
-        addToPokedex(pokemon, arrayIndex, LOAD_NR);
-    }
+function loadMorePokemon() {
+    loadAndRenderPokemon();
 }
 
 function view(pokemonIndex) {

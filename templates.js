@@ -4,25 +4,22 @@
  * @param {Number} countFrom - number of pokemon loaded before
  * @returns {String} loading message HTML
  */
-function loadingMessageHtml(pokeId, countFrom) {
+function getLoadingMessageHtml(pokeId, countFrom) {
     const current = getPokeId(pokeId - 1);
     const end = getPokeId(countFrom + LOAD_NR - 1);
-    return messageHtml('loading', current, end);
+    return loadingMessageHtml(current, end);
 }
 
 
 /**
  * get HTML string for loading or rendering message
- * @param {String} message - message content ('loading' or 'rendering')
  * @param {String} current - PokeID of currently loading Pokemon
  * @param {String} end - total number after loading
  * @returns {String} loading message HTML
  */
-function messageHtml(message, current, end) {
+function loadingMessageHtml(current, end) {
     return /* html */ `
-        ${message}      
-        ${current} / ${end}
-        ...
+        loading ${current} / ${end} ...
     `;
 }
 
