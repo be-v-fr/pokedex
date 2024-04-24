@@ -12,6 +12,9 @@ function init() {
 }
 
 
+/**
+ * load pokemon and dynamically render pokedex
+ */
 function loadAndRenderPokemon() {
     const goalNr = pokemon.length + LOAD_NR;
     loadPokemon();
@@ -93,8 +96,7 @@ function renderPokedexWhileLoading(goalNr) {
     const interval = setInterval(() => {
         updatePokedex();
         window.scrollTo(0, document.body.scrollHeight);
-        console.log('render while loading!')
-        if(pokemon.length == goalNr) {
+        if (pokemon.length == goalNr) {
             toggleMessageOverlay();
             clearInterval(interval);
         }
@@ -109,15 +111,16 @@ function renderPokedexWhileLoading(goalNr) {
 function renderPokedex(pokemonArray) {
     const pokedex = document.getElementById('pokedex');
     pokedex.innerHTML = '';
-    for (let i = 0; i < pokemonArray.length; i++) {addToPokedex(pokemonArray, i)}
+    for (let i = 0; i < pokemonArray.length; i++) { addToPokedex(pokemonArray, i) }
 }
 
 
+/**
+ * update pokedex to current pokemon array (only unfiltered since only applied when loading, not when searching)
+ */
 function updatePokedex() {
     const startingLength = document.getElementsByClassName('pokedexCard').length;
-    for (let i = startingLength; i < pokemon.length; i++) {
-        addToPokedex(pokemon, i);
-    }
+    for (let i = startingLength; i < pokemon.length; i++) { addToPokedex(pokemon, i) }
 }
 
 
@@ -133,70 +136,99 @@ function addToPokedex(pokemonArray, index) {
     const type1 = data[4];
     pokedex.innerHTML += cardHtml(data);
     setPokedexBgColor(pokeId);
-    if (type1) {renderType1(pokeId, type1)}
+    if (type1) { renderType1(pokeId, type1) }
 }
 
+
+/**
+ * render (optional) second pokemon type
+ * @param {Number} pokeId - PokeID (counting from 1, not 0) 
+ * @param {String} type1 - pokemon type
+ */
 function renderType1(pokeId, type1) {
     const containerId = `pokedexCardLeft${pokeId}`;
     const container = document.getElementById(containerId);
     container.innerHTML += typeHtml(type1);
 }
 
+
+/**
+ * get desired pokedex data from raw API data for a single pokemon
+ * @param {Array} pokemonArray - array of pokemon in raw API format
+ * @param {Number} pokemonIndex - array index 
+ * @returns {Array} pokedex data
+ */
 function pokedexData(pokemonArray, pokemonIndex) {
-    let pokemonJson = pokemonArray[pokemonIndex];
-    let pokeId = pokemonJson['id'];
-    let name = pokemonJson['name'];
-    let imgUrl = pokemonJson['sprites']['other']['official-artwork']['front_default'];
-    let type0 = pokemonJson['types']['0']['type']['name'];
-    let type1 =  getType1(pokemonJson);
-    name = capitalizeFirstLetter(name);
-    type0 = capitalizeFirstLetter(type0);
+    const pokemonJson = pokemonArray[pokemonIndex];
+    const pokeId = pokemonJson['id'];
+    const name = capitalizeFirstLetter(pokemonJson['name']);
+    const imgUrl = pokemonJson['sprites']['other']['official-artwork']['front_default'];
+    const type0 = capitalizeFirstLetter(pokemonJson['types']['0']['type']['name']);
+    const type1 = capitalizeFirstLetter(getType1(pokemonJson));
     return [pokeId, name, imgUrl, type0, type1];
 }
 
+
+/**
+ * get pokemon type 1
+ * @param {JSON} pokemonJson 
+ * @returns {String} type 1 (if existing) or '' (else)
+ */
 function getType1(pokemonJson) {
-    let type1 = '';
-    if (pokemonJson['types']['1']) {
-        type1 = pokemonJson['types']['1']['type']['name'];
-        type1 = capitalizeFirstLetter(type1);
-    }
-    return type1;
+    if (pokemonJson['types']['1']) { return pokemonJson['types']['1']['type']['name'] }
+    else { return '' };
 }
 
+
+/**
+ * set background color of pokemon card in pokedex (according to pokemon type 0)
+ * @param {Number} pokeId - PokeID (counting from 1, not 0) 
+ */
 function setPokedexBgColor(pokeId) {
     const card = document.getElementById(`pokedexCard${pokeId}`);
     card.style.backgroundColor = getTypeColor(pokeId - 1, 0);
 }
 
-function getTypeColor(pokemonIndex, arrayIndex) {
-    let type = pokedexData(pokemon, pokemonIndex)[3];
-    type = type.toLowerCase(); // klein schreiben, da Parameter in Großschreibweise übergeben wurde
-    return TYPE_COLORS[`${type}`][arrayIndex];
+
+/**
+ * get corresponding type color
+ * @param {Number} pokemonIndex - pokemon array index
+ * @param {Number} colorHierarchy - 0 for primary type color, 1 for (darker) secondary type color
+ * @returns {String} color in hex format
+ */
+function getTypeColor(pokemonIndex, colorHierarchy) {
+    const type = pokedexData(pokemon, pokemonIndex)[3].toLowerCase();
+    return TYPE_COLORS[type][colorHierarchy];
 }
 
-function loadMorePokemon() {
-    loadAndRenderPokemon();
-}
 
+/**
+ * view pokemon in pokemon viewer
+ * @param {Number} pokemonIndex - pokemon array index
+ */
 function view(pokemonIndex) {
     currentPokemon = pokemonIndex - 1;
     toggleViewer();
     renderPokemonToViewer(currentPokemon);
 }
 
+
+/**
+ * toggle pokemon viewer
+ * @param {Event} event - click event 
+ */
 function toggleViewer(event) {
-    const body = document.body;
     const overlay = document.getElementById('viewerOverlay');
-    overlay.style.display = (overlay.style.display === 'none') ? 'flex' : 'none';
-
-    // Wenn ein Event übergeben wurde und es nicht im Pop-Up war, schließe das Pop-Up
-    if (event && !event.target.closest('#viewer')) {
-        overlay.style.display = 'none';
-    }
-
-    body.classList.toggle('no-scroll');
+    overlay.style.display = (overlay.style.display == 'none') ? 'flex' : 'none';
+    if (event && !event.target.closest('#viewer')) { overlay.style.display = 'none' }
+    document.body.classList.toggle('no-scroll');
 }
 
+
+/**
+ * render pokemon to pokemon viewer
+ * @param {Number} pokemonIndex - pokemon array index
+ */
 function renderPokemonToViewer(pokemonIndex) {
     const typeColor = getTypeColor(pokemonIndex, 0);
     renderViewerBasic(pokemonIndex);
@@ -207,70 +239,96 @@ function renderPokemonToViewer(pokemonIndex) {
     setNavDisplay(currentSection);
 }
 
+
+/**
+ * render basic pokemon data to pokemon viewer
+ * @param {Number} pokemonIndex - pokemon array index
+ */
 function renderViewerBasic(pokemonIndex) {
-    const basicData = pokedexData(pokemon, pokemonIndex); // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
-    const name = document.getElementById('viewerName');
+    const basicData = pokedexData(pokemon, pokemonIndex);
     const types = document.getElementById('viewerTypes');
     const pokemonImg = document.getElementById('viewerPokemonImg');
-
-    name.innerHTML = basicData[1];
+    document.getElementById('viewerName').innerHTML = basicData[1];
     types.innerHTML = '';
     types.innerHTML += typeHtml(basicData[3]);
-    if (basicData[4]) {
-        types.innerHTML += typeHtml(basicData[4]);
-    }
+    if (basicData[4]) { types.innerHTML += typeHtml(basicData[4]) }
     pokemonImg.src = basicData[2];
 }
 
+
+/**
+ * set viewer colors
+ * @param {String} color - color in hex format 
+ */
 function setViewerColor(color) {
-    const viewerTop = document.getElementById('viewerTop');
-    const viewerBottom = document.getElementById('viewerBottom');
-    viewerTop.style.background = color;
-    viewerBottom.style.color = color;
+    document.getElementById('viewerTop').style.background = color;
+    document.getElementById('viewerBottom').style.color = color;
 }
 
+
+/**
+ * set arrow buttons color
+ * @param {String} color - color in hex format 
+ */
 function setButtonColor(color) {
-    const arrowLeft = document.getElementById('arrowLeft');
-    const arrowRight = document.getElementById('arrowRight');
-    arrowLeft.style.stroke = color;
-    arrowRight.style.stroke = color;
+    document.getElementById('arrowLeft').style.stroke = color;
+    document.getElementById('arrowRight').style.stroke = color;
 }
 
-function renderViewerAboutSection(pokemonIndex) {
-    const idContainer = document.getElementById('pokeId');
-    const heightContainer = document.getElementById('height');
-    const weightContainer = document.getElementById('weight');
 
-    idContainer.innerHTML = getPokeId(pokemonIndex);
-    heightContainer.innerHTML = getHeight(pokemonIndex);
-    weightContainer.innerHTML = getWeight(pokemonIndex);
+/**
+ * render pokemon data to pokemon viewer about section
+ * @param {Number} pokemonIndex - pokemon array index
+ */
+function renderViewerAboutSection(pokemonIndex) {
+    document.getElementById('pokeId').innerHTML = getPokeId(pokemonIndex);
+    document.getElementById('height').innerHTML = getHeight(pokemonIndex);
+    document.getElementById('weight').innerHTML = getWeight(pokemonIndex);
     renderAbilities(pokemonIndex);
 }
 
+
+/**
+ * get full official PokeID from array index 
+ * @param {Number} pokemonIndex - pokemon array index (counting from 0)
+ * @returns {String} PokeID (counting from '#001')
+ */
 function getPokeId(pokemonIndex) {
-    let id = pokemonIndex + 1 // Indizierung anpassen
-    id = '00' + id; // füge vor der Zahl zwei Nullen hinzu
-    id = id.slice(-3); // entferne alles vor den letzten drei Zeichen
+    let id = pokemonIndex + 1;
+    id = '00' + id;
+    id = id.slice(-3);
     return '#' + id;
 }
 
+
+/**
+ * get pokemon height
+ * @param {Number} pokemonIndex - pokemon array index
+ * @returns {String} height in meters
+ */
 function getHeight(pokemonIndex) {
-    let height = pokemon[pokemonIndex]['height']; // dm
-    height /= 10; // m
-    return height + ' m';
+    return (pokemon[pokemonIndex]['height'] / 10) + ' m';
 }
 
+
+/**
+ * get pokemon weight
+ * @param {Number} pokemonIndex - pokemon array index
+ * @returns {String} weight in kilograms
+ */
 function getWeight(pokemonIndex) {
-    let weight = pokemon[pokemonIndex]['weight']; // cg
-    weight /= 10; // kg
-    return weight + ' kg';
+    return (pokemon[pokemonIndex]['weight'] / 10) + ' kg';
 }
 
+
+/**
+ * render pokemon abilities
+ * @param {Number} pokemonIndex - pokemon array index
+ */
 function renderAbilities(pokemonIndex) {
     const abilitiesContainer = document.getElementById('abilities');
     const abilities = pokemon[pokemonIndex]['abilities'];
     abilitiesContainer.innerHTML = '';
-
     for (let i = 0; i < abilities.length; i++) {
         let ability = abilities[i]['ability']['name'];
         ability = capitalizeFirstLetter(ability);
@@ -279,7 +337,12 @@ function renderAbilities(pokemonIndex) {
     }
 }
 
-function renderViewerStatsSection(pokemonIndex, color) {
+
+/**
+ * render pokemon data to pokemon viewer stats section
+ * @param {Number} pokemonIndex - pokemon array index
+ */
+function renderViewerStatsSection(pokemonIndex) {
     const stats = pokemon[pokemonIndex]['stats'];
     const table = document.getElementById('statsTable');
     table.innerHTML = '';
@@ -288,19 +351,25 @@ function renderViewerStatsSection(pokemonIndex, color) {
     }
 }
 
+
+/**
+ * render single stats table item
+ * @param {*} stats 
+ * @param {*} statsIndex 
+ */
 function renderStat(stats, statsIndex) {
     const table = document.getElementById('statsTable');
     const value = stats[statsIndex]['base_stat'];
     let name = stats[statsIndex]['stat']['name'];
-    if (statsIndex == 0) { // Formatierung des Namens
-        name = 'HP'; // notwendig, da Abkürzung Sonderfall ist
-    } else {
-        name = capitalizeFirstLetter(name);
-        name = removeHyphens(name);
-    }
+    name = (statsIndex == 0) ? 'HP' : removeHyphens(capitalizeFirstLetter(name));
     table.innerHTML += statsHtml(name, value);
 }
 
+
+/**
+ * show viewer section
+ * @param {String} section - viewer section ('about' or 'stats') 
+ */
 function showViewerSection(section) {
     const about = document.getElementById('viewerAbout');
     const stats = document.getElementById('viewerStats');
@@ -315,11 +384,21 @@ function showViewerSection(section) {
     }
 }
 
+
+/**
+ * set viewer navigation style according to current pokemon and viewer state
+ * @param {String} section - viewer section ('about' or 'stats')
+ */
 function setNavDisplay(section) {
     setNavColor(section);
     setNavCss(section);
 }
 
+
+/**
+ * set viewer navigation color according to current pokemon and section
+ * @param {String} section - viewer section ('about' or 'stats')
+ */
 function setNavColor(section) {
     const about = document.getElementById('navAbout');
     const stats = document.getElementById('navStats');
@@ -335,6 +414,11 @@ function setNavColor(section) {
     }
 }
 
+
+/**
+ * set viewer navigation style (other than pokemon type color) according to current section
+ * @param {String} section - viewer section ('about' or 'stats')
+ */
 function setNavCss(section) {
     const about = document.getElementById('navAbout');
     const stats = document.getElementById('navStats');
@@ -347,9 +431,16 @@ function setNavCss(section) {
     }
 }
 
+
+/**
+ * handle css classes for viewer navigation hover animation
+ * @param {String} section - viewer section ('about' or 'stats')
+ * @param {Boolean} activate - activate (true) or deactivate (false) viewer section
+ * @param {String} side - section position in navigation menu ('left' or 'right')
+ */
 function navActivate(section, activate, side) {
     side = capitalizeFirstLetter(side);
-    if(activate == true) {
+    if (activate == true) {
         section.classList.add('navActive');
         section.classList.remove('navInactive');
         section.classList.remove(`nav${side}`)
@@ -360,27 +451,30 @@ function navActivate(section, activate, side) {
     }
 }
 
+
+/**
+ * view next or previous pokemon
+ * @param {Boolean} next - next (true) or previous (false) pokemon
+ */
 function nextPokemon(next) {
-    if (next) {
-        incrementCurrent();
-    } else {
-        decrementCurrent();
-    }
+    next ? incrementCurrent() : decrementCurrent();
     renderPokemonToViewer(currentPokemon);
 }
 
+
+/**
+ * increment current pokemon including modulo
+ */
 function incrementCurrent() {
-    if (currentPokemon < pokemon.length - 1) {
-        currentPokemon++;
-    } else {
-        currentPokemon = 0;
-    }
+    currentPokemon++;
+    currentPokemon %= pokemon.length;
 }
 
+
+/**
+ * decrement current pokemon including modulo
+ */
 function decrementCurrent() {
-    if (currentPokemon > 0) {
-        currentPokemon--;
-    } else {
-        currentPokemon = pokemon.length - 1;
-    }
+    currentPokemon--;
+    if(currentPokemon < 0) {currentPokemon += pokemon.length};
 }
