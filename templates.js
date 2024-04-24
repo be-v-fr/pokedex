@@ -1,25 +1,26 @@
 /**
- * return loading message with calculated parameters
+ * get loading message HTML with calculated parameters
  * @param {Number} pokeId - PokeID of currently loading Pokemon 
  * @param {Number} countFrom - number of pokemon loaded before
- * @returns HTML string for loading message
+ * @returns {String} loading message HTML
  */
 function loadingMessageHtml(pokeId, countFrom) {
     const current = getPokeId(pokeId - 1);
     const end = getPokeId(countFrom + LOAD_NR - 1);
-    return getLoadingMessageHtml(current, end);
+    return messageHtml('loading', current, end);
 }
 
 
 /**
- * get HTML string for loading message
+ * get HTML string for loading or rendering message
+ * @param {String} message - message content ('loading' or 'rendering')
  * @param {String} current - PokeID of currently loading Pokemon
  * @param {String} end - total number after loading
- * @returns HTML string for loading message
+ * @returns {String} loading message HTML
  */
-function getLoadingMessageHtml(current, end) {
+function messageHtml(message, current, end) {
     return /* html */ `
-        loading      
+        ${message}      
         ${current} / ${end}
         ...
     `;
@@ -27,11 +28,11 @@ function getLoadingMessageHtml(current, end) {
 
 
 /**
- * 
- * @param {Array} data - 
- * @returns 
+ * get single pokemon card HTML
+ * @param {Array} data - pokemon data (0: index, 1: name, 2: imgUrl, 3: type0, 4: type1)
+ * @returns {String} single pokemon card HTML
  */
-function cardHtml(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
+function cardHtml(data) {
     return /* html */ `
         <div class="pokedexCard" id="pokedexCard${data[0]}" onclick="view(${data[0]})">
             <img class="pokeballBg" src="./img/pokeball.svg">
@@ -46,6 +47,12 @@ function cardHtml(data) { // 0: index, 1: name, 2: imgUrl, 3: type0, 4: type1
     `;
 }
 
+
+/**
+ * get pokemon type badge HTML
+ * @param {String} type - pokemon type
+ * @returns {String} type badge HTML
+ */
 function typeHtml(type) {
     const color = TYPE_COLORS[type.toLowerCase()][1];
     return /* html */ `
@@ -58,6 +65,13 @@ function typeHtml(type) {
     `;
 }
 
+
+/**
+ * get stats table row HTML
+ * @param {String} name - stats name
+ * @param {String} value - stats value
+ * @returns {String} stats table row HTML 
+ */
 function statsHtml(name, value) {
     return /* html */ `
         <tr>
