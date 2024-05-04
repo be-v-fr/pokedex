@@ -283,3 +283,15 @@ footer {
     justify-content: center;
     align-items: center;
 }
+
+#credits {
+    color: white;
+    font-style: normal;
+    text-decoration: none;
+    transition: 75ms ease;
+}
+
+#credits:hover {
+    transition: 75ms ease;
+    text-decoration: underline;
+}

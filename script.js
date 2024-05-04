@@ -211,3 +211,19 @@ function view(pokemonIndex) {
     toggleViewer();
     renderPokemonToViewer(currentPokemon);
 }
+
+
+/**
+ * Show credits and add event listener to hide message after additional click.
+ * Also remove that event listener again after the additional click. 
+ */
+function showCredits() {
+    setMessage(creditsHtml());
+    toggleMessageOverlay();
+    document.addEventListener('mousedown', function hideMsg($event) {
+        if ($event.target != document.getElementById('credits')) {
+            toggleMessageOverlay();
+            document.removeEventListener('mousedown', hideMsg);
+        }
+    });
+}

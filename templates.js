@@ -77,3 +77,14 @@ function statsHtml(name, value) {
         </tr>
     `;
 }
+
+
+/**
+ * get credits HTML
+ * @returns {String} credits HTML
+ */
+function creditsHtml() {
+    return /* html */ `
+        <a id="credits" target="_blank" href="https://www.flaticon.com/de/kostenlose-icons/pokemon" title="pokémon Icons">Pokémon Icons erstellt von Those Icons - Flaticon</a>
+    `;    
+}

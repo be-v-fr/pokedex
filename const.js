@@ -19,4 +19,4 @@ const TYPE_COLORS = {
   'fairy': ['#D685AD', '#B86A8A']
 };
 
-const LOAD_NR = 50;
+const LOAD_NR = 30;
