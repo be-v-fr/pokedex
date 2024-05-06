@@ -1,3 +1,9 @@
+.preventSelect {
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
 .iconBtn {
     filter: drop-shadow(var(--shadowing-s));
     transition: 125ms ease-in-out;
