@@ -30,13 +30,14 @@
 }
 
 #pokemonViewer {
+    height: 650px;
     min-height: 50vh;
+    min-height: 50dvh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     color: white;
     width: var(--viewer-width);
-    height: 650px;
     background: none;
     border-radius: var(--border-radius-l);
     box-shadow: var(--shadowing-l);
