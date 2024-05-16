@@ -33,6 +33,8 @@
     height: 650px;
     min-height: 50vh;
     min-height: 50dvh;
+    max-height: 90vh;
+    max-height: 90dvh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

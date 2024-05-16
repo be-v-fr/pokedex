@@ -56,10 +56,3 @@
         --viewer-width: 100vw;
     }
 }
-
-@media only screen and (max-height: 650px) {
-    #pokemonViewer {
-        height: 100vh;
-        height: 100dvh;
-    }
-}
